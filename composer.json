@@ -1,0 +1,32 @@
+{
+    "name": "bnomei/kirby3-handlebars",
+    "type": "plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "description": "Kirby 3 Component for semantic Templates with Handlebars and Mustache",
+    "autoload": {
+        "files": [
+            "config.php"
+        ],
+        "psr-4": {
+            "Bnomei\\": "classes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bruno Meilick",
+            "email": "b@bnomei.com"
+        }
+    ],
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/k-next/kirby"
+        }
+      ],
+    "require": {
+        "zordius/lightncandy": "dev-master",
+        "getkirby/cms": "dev-master as 3.0.0"
+      },
+      "minimum-stability": "beta"
+}
