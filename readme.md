@@ -23,6 +23,7 @@ This plugin is free but if you use it in a commercial project please consider to
 Render unto {{ c }} the things that are {{ c }}'s, and unto {{ g }} the things that are {{ g }}'s.
 ```
 
+**templates/home.php**
 ```php
   snippet('plugin-handlebars', [
     'template' => 'home',
@@ -34,8 +35,8 @@ Render unto {{ c }} the things that are {{ c }}'s, and unto {{ g }} the things t
 
   // or
   echo $page->template(); // 'home' for example
-  $page->handlebars(); // template of page as string 'home', data from site/controllers/home.php
-  $page->handlebars('caesar', ['c'=>'nero']); // template 'caesar', data from site/controllers/home.php merged with custom array
+  echo $page->handlebars(); // template of page as string 'home', data from site/controllers/home.php
+  echo $page->handlebars('caesar', ['c'=>'nero', 'g'=>'fire']); // template 'caesar', data from site/controllers/home.php merged with custom array
 ```
 
 > TIP: you can also get the output in a variable setting snippets `return`-param to true. `$output = snippet(..., [...], true)`;
