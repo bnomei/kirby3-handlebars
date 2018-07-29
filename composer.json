@@ -25,7 +25,7 @@
         }
       ],
     "require": {
-        "zordius/lightncandy": "dev-master",
+        "zordius/lightncandy": "dev-master as 1.2.2",
         "getkirby/cms": "dev-master as 3.0.0"
       },
       "minimum-stability": "beta"

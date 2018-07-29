@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "caad832c214b156adf9f72683240ee6c",
-    "content-hash": "cae1997b2f1396324d56295e8bac0ee9",
+    "hash": "9924087a66ad3decf67529a29f622cb6",
+    "content-hash": "7517592658957400a1086dc690d82e8b",
     "packages": [
         {
             "name": "claviska/simpleimage",
@@ -848,6 +848,12 @@
     ],
     "packages-dev": [],
     "aliases": [
+        {
+            "alias": "1.2.2",
+            "alias_normalized": "1.2.2.0",
+            "version": "9999999-dev",
+            "package": "zordius/lightncandy"
+        },
         {
             "alias": "3.0.0",
             "alias_normalized": "3.0.0.0",
