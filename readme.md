@@ -2,7 +2,7 @@
 
 ![GitHub release](https://img.shields.io/github/release/bnomei/kirby3-handlebars.svg?maxAge=1800) ![License](https://img.shields.io/github/license/mashape/apistatus.svg) ![Kirby Version](https://img.shields.io/badge/Kirby-3%2B-black.svg)
 
-Kirby 3 Component for semantic Templates with [Handlebars](https://handlebarsjs.com/) and [Mustache](https://mustache.github.io/)
+Kirby 3 Component, Snippet and Page Method for semantic templates with [Handlebars](https://handlebarsjs.com/) and [Mustache](https://mustache.github.io/)
 
 This plugin is free but if you use it in a commercial project please consider to [make a donation 🍻](https://www.paypal.me/bnomei/5).
 
@@ -31,6 +31,11 @@ Render unto {{ c }} the things that are {{ c }}'s, and unto {{ g }} the things t
         'g' => 'God'
     ]
   ]);
+
+  // or
+  echo $page->template(); // 'home' for example
+  $page->handlebars(); // template of page as string 'home', data from site/controllers/home.php
+  $page->handlebars('caesar', ['c'=>'nero']); // template 'caesar', data from site/controllers/home.php merged with custom array
 ```
 
 > TIP: you can also get the output in a variable setting snippets `return`-param to true. `$output = snippet(..., [...], true)`;
@@ -39,6 +44,8 @@ Render unto {{ c }} the things that are {{ c }}'s, and unto {{ g }} the things t
 
 - Put your handlebars templates in the `site/templates/` folder.
 - See below on how turn on Component and configure File extension in settings.
+- Prepare data in Controllers stored at `site/controllers/*` which will be available in the templates
+- In case you do not have a handlebar template with matching name it will fallback to kirbys php template logic.
 
 ## Settings
 
@@ -51,11 +58,13 @@ if `true` all templating will be handled by this plugin.
 
 **escape**
 - default: `false`
-By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html).
+By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formates as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly.
 
 **partials**
 - default: `true`
 By default all partials in `site/templates/partials` will be loaded. You can change the subfolder by setting a string to **partials**.
+
+> Note: Partials support is still ALPHA status!
 
 ## Disclaimer
 
