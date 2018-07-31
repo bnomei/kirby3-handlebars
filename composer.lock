@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b68af2bb8cdadbb6df8725a218064753",
+    "content-hash": "30c2eccd4d15b574f031804fd13b8396",
     "packages": [
         {
             "name": "claviska/simpleimage",
@@ -794,16 +794,16 @@
         },
         {
             "name": "zordius/lightncandy",
-            "version": "dev-master",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zordius/lightncandy.git",
-                "reference": "0301a34501819af7f04adbed524b3fdc9061d8fe"
+                "reference": "448cb2855d7301fa5380d8228255d46e9be92903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/0301a34501819af7f04adbed524b3fdc9061d8fe",
-                "reference": "0301a34501819af7f04adbed524b3fdc9061d8fe",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/448cb2855d7301fa5380d8228255d46e9be92903",
+                "reference": "448cb2855d7301fa5380d8228255d46e9be92903",
                 "shasum": ""
             },
             "require": {
@@ -842,17 +842,11 @@
                 "php",
                 "template"
             ],
-            "time": "2018-03-23T09:14:34+00:00"
+            "time": "2018-03-19T07:06:10+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [
-        {
-            "alias": "1.2.2",
-            "alias_normalized": "1.2.2.0",
-            "version": "9999999-dev",
-            "package": "zordius/lightncandy"
-        },
         {
             "alias": "3.0.0",
             "alias_normalized": "3.0.0.0",
@@ -862,7 +856,6 @@
     ],
     "minimum-stability": "beta",
     "stability-flags": {
-        "zordius/lightncandy": 20,
         "getkirby/cms": 20
     },
     "prefer-stable": false,
