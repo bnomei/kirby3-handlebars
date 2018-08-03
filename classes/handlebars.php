@@ -55,6 +55,8 @@ class Handlebars extends \Kirby\Cms\Template
                     return "<!-- partial: $template -->";
                 },
             ];
+            kirby()->cache('bnomei.handlebars.partials')->flush();
+            kirby()->cache('bnomei.handlebars.render')->flush();
         }
 
         // PARTIALS
