@@ -45,11 +45,11 @@ class Handlebars extends \Kirby\Cms\Template
 
         // COMPILE OPTIONS
         $compileOptions = [
-            'flags' => LightnCandy::FLAG_NOESCAPE
+            'flags' => LightnCandy::FLAG_NOESCAPE | LightnCandy::FLAG_ELSE
         ];
         if($debug) {
             $compileOptions = [
-                'flags' => LightnCandy::FLAG_NOESCAPE | LightnCandy::FLAG_RENDER_DEBUG,
+                'flags' => LightnCandy::FLAG_NOESCAPE | LightnCandy::FLAG_ELSE | LightnCandy::FLAG_RENDER_DEBUG,
                 'renderex' => '// Compiled at ' . date('Y-m-d h:i:s'),
                 'prepartial' => function ($context, $template, $name) {
                     return "<!-- partial: $template -->";
