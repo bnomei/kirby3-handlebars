@@ -93,9 +93,13 @@ class Handlebars extends \Kirby\Cms\Template
                 $php = F::read($cache);
             }
 
-            $renderCache = kirby()->cache('bnomei.handlebars.render');
-            $rid = md5(($debug?'.':'').$name.md5(json_encode($data)));
-            $result = $renderCache->get($rid);
+            $result = null;
+            if(option('bnomei.handlebars.cache.render')) {
+                $renderCache = kirby()->cache('bnomei.handlebars.render');
+                $rid = md5(($debug?'.':'').$name.md5(json_encode($data))); // TODO: slow?
+                $result = $renderCache->get($rid);
+            }
+
             if (!$result || $needsUpdate) {
                 // NOTE: since LightnCandy returns a Closure and
                 // these can not be packed into a var as string
@@ -104,7 +108,9 @@ class Handlebars extends \Kirby\Cms\Template
                     'precompiledTemplate' => $php,
                     'data' => $data,
                     ]);
-                $renderCache->set($rid, $result);
+                if (option('bnomei.handlebars.cache.render')) {
+                    $renderCache->set($rid, $result);
+                }
             }
         } catch(Exception $ex) {
             return $ex->getMessage();
