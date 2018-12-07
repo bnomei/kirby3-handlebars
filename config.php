@@ -6,8 +6,8 @@ Kirby::plugin('bnomei/handlebars', [
         'partials' => false, // true or name of folder
         'extension' => 'hbs', // or 'mustache' etc.
         'escape' => false, // => FLAG_NOESCAPE
-        'cache.partials' => true,
-        'cache.render' => true,
+        'cache.partials' => false,
+        'cache.render' => false,
     ],
     'components' => [
         'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html') {
