@@ -3,11 +3,24 @@
 Kirby::plugin('bnomei/handlebars', [
     'options' => [
         'component' => false,
-        'partials' => false, // true or name of folder
-        'extension' => 'hbs', // or 'mustache' etc.
-        'escape' => false, // => FLAG_NOESCAPE
-        'cache.partials' => false,
-        'cache.render' => false,
+        'escape' => false, // => FLAG_NOESCAPE aka {{{ }}} are default
+
+        'dir.templates' => function () {
+            return kirby()->roots()->templates();
+        },
+        'dir.partials' => function () {
+            $templates = option('bnomei.handlebars.dir.templates');
+            if (is_callable($templates)) {
+                $templates = $templates();
+            }
+            return $templates . DIRECTORY_SEPARATOR . 'partials';
+        },
+
+        'extension.input' => 'hbs', // or 'mustache' etc.
+        'extension.output' => 'lnc',
+
+        'cache.render' => true, // creates a plugin cache called 'render'
+        'cache.files' => true, // creates a plugin cache called 'files'
     ],
     'components' => [
         'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html') {
@@ -24,7 +37,7 @@ Kirby::plugin('bnomei/handlebars', [
     'pageMethods' => [
         'handlebars' => function ($template = null, $data = []) {
             return snippet('plugin-handlebars', [
-                'template' => ($template ? $template : $this->template()), 
+                'template' => ($template ? $template : $this->template()),
                 'data' => $this->controller($data)
             ], true);
         }

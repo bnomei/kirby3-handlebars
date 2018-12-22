@@ -19,7 +19,7 @@ This plugin is free but if you use it in a commercial project please consider to
 
 - LightnCandy is extremely fast and lightweight.
 - Templates are only precompiled to native PHP on modification.
-- Render output is cached even without Kirbys Page Cache. The render cache is devalidated if template or data is modified.
+- Render output is cached even without Kirbys Page Cache. The render cache is devalidated if either template or data is modified.
 
 ## Usage without Component
 
@@ -76,22 +76,26 @@ return function ($site, $page, $kirby) {
 ## Settings
 
 **component**
-- default: `false`
+- default: `false` 
 if `true` all templating will be handled by this plugin.
-
-**extension**
-- default: `hbs`
 
 **escape**
 - default: `false`
 By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formated as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly.
 Alternatively you can set it to `true` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html).
 
-**partials**
-- default: `true`
-By default all partials in `site/templates/partials` will be loaded. You can change the subfolder by setting a string to **partials**.
 
-> Note: Partials support is still ALPHA status!
+**dir.templates**
+- default: callback returning `kirby()->roots()->templates()`
+
+**dir.partials**
+- default: callback returning `kirby()->roots()->templates().'/partials'`
+
+**extension.input**
+- default: `hbs`
+
+**extension.output**
+- default: `lnc`, hbs compiled to php
 
 ## Disclaimer
 
