@@ -79,11 +79,10 @@ return function ($site, $page, $kirby) {
 - default: `false` 
 if `true` all templating will be handled by this plugin.
 
-**escape**
-- default: `false`
+**no-escape**
+- default: `true`
 By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formated as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly.
-Alternatively you can set it to `true` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html).
-
+Alternatively you can set it to `false` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html).
 
 **dir.templates**
 - default: callback returning `kirby()->roots()->templates()`

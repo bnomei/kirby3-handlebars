@@ -3,7 +3,7 @@
 Kirby::plugin('bnomei/handlebars', [
     'options' => [
         'component' => false,
-        'escape' => false, // => FLAG_NOESCAPE aka {{{ }}} are default
+        'no-escape' => true, // => FLAG_NOESCAPE aka {{{ }}} are not needed
 
         'dir.templates' => function () {
             return kirby()->roots()->templates();
@@ -21,6 +21,7 @@ Kirby::plugin('bnomei/handlebars', [
 
         'cache.render' => true, // creates a plugin cache called 'render'
         'cache.files' => true, // creates a plugin cache called 'files'
+        'cache.lnc' => true, // creates a plugin cache called 'lnc'
     ],
     'components' => [
         'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html') {

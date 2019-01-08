@@ -1,4 +1,8 @@
 <?php
+
+namespace Bnomei;
+
+use LightnCandy\LightnCandy;
 use Kirby\Toolkit\F;
 use Kirby\Toolkit\Dir;
 
@@ -28,7 +32,7 @@ class Handlebars extends \Kirby\Cms\Template
         }
 
         $flags = LightnCandy::FLAG_ELSE;
-        if (option('bnomei.handlebars.escape')) {
+        if (option('bnomei.handlebars.no-escape')) {
             $flags |= LightnCandy::FLAG_NOESCAPE;
         }
         // NOTE: current will not notice change between debug and not. l'n'c debug is not supported here yet.
@@ -118,7 +122,9 @@ class Handlebars extends \Kirby\Cms\Template
         if ($isPartial) {
             $filename = '@' . $filename;
         }
-        return kirby()->roots()->templates() . DIRECTORY_SEPARATOR . $filename . '.' .option('bnomei.handlebars.extension.output');
+        return kirby()->roots()->cache() . DIRECTORY_SEPARATOR .
+            'bnomei' . DIRECTORY_SEPARATOR . 'handlebars' . DIRECTORY_SEPARATOR . 'lnc' . DIRECTORY_SEPARATOR .
+            $filename . '.' .option('bnomei.handlebars.extension.output');
     }
 
     private static $templates = [];
@@ -195,7 +201,6 @@ class Handlebars extends \Kirby\Cms\Template
                 return '';
             }
 
-
             if (!$result || $loadTemplate['needsUpdate']) {
                 // NOTE: since LightnCandy returns a Closure and
                 // these can not be packed into a var as string
@@ -204,7 +209,7 @@ class Handlebars extends \Kirby\Cms\Template
                 $result = snippet('handlebars/render', [
                     'precompiledTemplate' => $php,
                     'data' => $data,
-                    ]);
+                ], true);
 
                 if ($renderCacheId) {
                     $renderCache->set($renderCacheId, $result);
