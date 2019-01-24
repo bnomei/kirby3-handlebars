@@ -14,7 +14,7 @@ This plugin is free but if you use it in a commercial project please consider to
 ## Installation
 
 - for devkit-setup use `composer require bnomei/kirby3-handlebars` or
-- extract latest release of [kirby3-handlebars.zip](https://github.com/bnomei/kirby3-handlebars/releases/download/v2.0.0/kirby3-handlebars.zip) as folder `site/plugins/kirby3-handlebars`
+- extract latest release of [kirby3-handlebars.zip](https://github.com/bnomei/kirby3-handlebars/releases/download/v2.0.1/kirby3-handlebars.zip) as folder `site/plugins/kirby3-handlebars`
 
 > Installation as a gitsubmodule is *not* supported.
 
@@ -103,6 +103,15 @@ Alternatively you can set it to `false` and use `{{{ var }}}` [triple mustaches]
 
 **extension.output**
 - default: `lnc`, hbs compiled to php
+
+**cache.render**
+- default: `true`, cache render based on hash of data
+
+**cache.files**
+- default: `true`, cache paths of template and partial files
+
+**cache.lnc**
+- default: `true`, cache compiled php
 
 ## Disclaimer
 

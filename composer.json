@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-handlebars",
     "type": "plugin",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "license": "MIT",
     "description": "Kirby 3 Component for semantic templates with Handlebars and Mustache",
     "authors": [
@@ -37,12 +37,6 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/k-next/kirby"
-        }
-    ],
     "require": {
         "php": ">=7.1.0",
         "getkirby/cms": "^3.0.0-RC-2.0",

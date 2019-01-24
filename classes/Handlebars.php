@@ -66,9 +66,10 @@ class Handlebars extends \Kirby\Cms\Template
         $isPartial = false;
         $inputExtension = '.' . option('bnomei.handlebars.extension.input');
 
-        if ($force || option('debug')) {
-            kirby()->cache('bnomei.handlebars.files')->flush();
-        }
+        // if ($force || option('debug')) {
+        //     kirby()->cache('bnomei.handlebars.files')->flush();
+        // }
+        $force = false;
 
         $filesCache = kirby()->cache('bnomei.handlebars.files');
         $filesPartials = $filesCache->get('partials');
@@ -154,13 +155,13 @@ class Handlebars extends \Kirby\Cms\Template
                 $string = LightnCandy::compile($t, $compileOptions);
             }
             F::write($output, $string);
-            $templates[$output] = $string;
+            static::$templates[$output] = $string;
             $needsUpdate = true;
         } else {
-            $string = \Kirby\Toolkit\A::get($templates, $output);
+            $string = \Kirby\Toolkit\A::get(static::$templates, $output);
             if (!$string) {
                 $string = F::read($output);
-                $templates[$output] = $string;
+                static::$templates[$output] = $string;
             }
         }
 
@@ -180,7 +181,6 @@ class Handlebars extends \Kirby\Cms\Template
                 unset($data[$k]);
             }
         }
-
 
         try {
             if (option('bnomei.handlebars.cache.render')) {
