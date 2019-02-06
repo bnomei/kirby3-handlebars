@@ -46,3 +46,19 @@ Kirby::plugin('bnomei/handlebars', [
         }
     ]
 ]);
+
+if (!class_exists('Bnomei\Handlebars')) {
+    require_once __DIR__ . '/classes/Handlebars.php';
+}
+
+if (!function_exists('hbs')) {
+    function hbs(string $template, $data = [], $return = false): ?string
+    {
+        $r = \Bnomei\Handlebars::r($template, $data);
+        if($return) {
+            return $r;
+        }
+        echo $r;
+        return null;
+    }
+}
