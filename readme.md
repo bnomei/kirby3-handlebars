@@ -68,6 +68,8 @@ return function ($site, $page, $kirby) {
   
   echo $page->handlebars('render-unto', ['g'=>'Gods']); // template 'render-unto', data from site/controllers/home.php merged with custom array
   // => Render unto Cassia the things that are Cassia's, and unto God the things that are God's.
+
+  hbs('render-unto', ['c' => 'Caesar', 'g' => 'God']);
 ```
 
 > TIP: you can also get the output in a variable setting snippets `return`-param to true. `$output = snippet(..., [...], true)`;
