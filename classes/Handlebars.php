@@ -66,10 +66,9 @@ class Handlebars extends \Kirby\Cms\Template
         $isPartial = false;
         $inputExtension = '.' . option('bnomei.handlebars.extension.input');
 
-        // if ($force || option('debug')) {
-        //     kirby()->cache('bnomei.handlebars.files')->flush();
-        // }
-        $force = false;
+        if ($force || option('debug')) {
+            kirby()->cache('bnomei.handlebars.files')->flush();
+        }
 
         $filesCache = kirby()->cache('bnomei.handlebars.files');
         $filesPartials = $filesCache->get('partials');
