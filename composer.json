@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-handlebars",
     "type": "kirby-plugin",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "license": "MIT",
     "description": "Kirby 3 Component for semantic templates with Handlebars and Mustache",
     "authors": [

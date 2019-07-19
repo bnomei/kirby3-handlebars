@@ -114,6 +114,11 @@ class Handlebars extends \Kirby\Cms\Template
             return self::templateInput($filename, true);
         }
 
+        if (!$filePath) {
+            // fallback to default
+            return self::templateInput('default', true);
+        }
+
         return compact('filePath', 'isPartial', 'filename');
     }
 
@@ -124,7 +129,7 @@ class Handlebars extends \Kirby\Cms\Template
         }
         return kirby()->roots()->cache() . DIRECTORY_SEPARATOR .
             'bnomei' . DIRECTORY_SEPARATOR . 'handlebars' . DIRECTORY_SEPARATOR . 'lnc' . DIRECTORY_SEPARATOR .
-            $filename . '.' .option('bnomei.handlebars.extension.output');
+            $filename . '.' . option('bnomei.handlebars.extension.output');
     }
 
     private static $templates = [];
