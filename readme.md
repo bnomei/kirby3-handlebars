@@ -183,8 +183,8 @@ return function ($site, $page, $kirby) {
 All settings need to be prefixed with `bnomei.handlebars.`
 
 #### component
-- default: `false` 
-if `true` all templating will be handled by this plugin.
+- default: `true` 
+if `false` no templating will be handled by this plugin and you need to use the `hbs()`/`handlebars()` functions.
 
 #### no-escape
 - default: `true`
