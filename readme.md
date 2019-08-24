@@ -72,7 +72,7 @@ Title: 🍕
 ```handlebars
 {{> @piece-of-cake this }}
 ```
-> Note: `@` and ```this` are used by the JS version of Handlebars in Fractal to denote a partial and forward the data. Both will be automatically removed on PHP compilation by this plugin.
+> Note: `@` and `this` are used by the JS version of Handlebars in Fractal to denote a partial and forward the data. Both will be automatically removed on PHP compilation by this plugin.
 
 **/site/templates/partials/piece-of-cake.hbs**
 ```handlebars
@@ -133,11 +133,11 @@ Render unto {{ c }} the things that are {{ c }}'s, and unto {{ g }} the things t
 
 ## Performance & Caching
 
-LightnCandy is extremely fast and lightweight since its compiled to raw PHP just like [Blade Templates](https://github.com/search?q=kirby-cms+blade). Templates are only precompiled to native PHP on modification. This could be disabled with the `cache.lnc` setting but you really should not.
+LightnCandy is extremely fast and lightweight since its compiled to raw PHP just like [Blade Templates](https://github.com/search?q=kirby-cms+blade). Templates are only precompiled to native PHP on modification. This could be disabled with the `lnc` setting but you really should not.
 
 ### Build-In Cache
 
-Render output is **not** cached by default. You can activate it using the `cache.render` setting. The render cache is devalidated if either template or data is modified. But since a hash of the data is created every time this has a slight performance impact.
+Render output is **not** cached by default. You can activate it using the `render` setting. The render cache is devalidated if either template or data is modified. But since a hash of the data is created every time this has a slight performance impact.
 
 **site/config.php**
 ```php
@@ -191,25 +191,25 @@ if `true` all templating will be handled by this plugin.
 By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formated as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly.
 Alternatively you can set it to `false` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html).
 
-#### dir.templates
+#### dir-templates
 - default: callback returning `kirby()->roots()->templates()`
 
-#### dir.partials
+#### dir-partials
 - default: callback returning `kirby()->roots()->templates().'/partials'`
 
-#### extension.input
+#### extension-input
 - default: `hbs`
 
-#### extension.output
+#### extension-output
 - default: `lnc`, hbs compiled to php
 
-#### cache.render
+#### render
 - default: `false`, cache render based on hash of data
 
-#### cache.files
+#### files
 - default: `true`, cache paths of template and partial files
 
-#### cache.lnc
+#### lnc
 - default: `true`, cache compiled php
 
 ## Dependencies
