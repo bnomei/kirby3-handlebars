@@ -4,61 +4,70 @@
 
 Kirby::plugin('bnomei/handlebars', [
     'options' => [
-        'component' => false,
+        'component' => true,
         'no-escape' => true, // => FLAG_NOESCAPE aka {{{ }}} are not needed
 
-        'dir.templates' => function () {
+        'dir-templates' => function () {
             return kirby()->roots()->templates();
         },
-        'dir.partials' => function () {
-            $templates = option('bnomei.handlebars.dir.templates');
+        'dir-partials' => function () {
+            $templates = option('bnomei.handlebars.dir-templates');
             if (is_callable($templates)) {
                 $templates = $templates();
             }
             return $templates . DIRECTORY_SEPARATOR . 'partials';
         },
 
-        'extension.input' => 'hbs', // or 'mustache' etc.
-        'extension.output' => 'lnc',
+        'extension-input' => 'hbs', // or 'mustache' etc.
+        'extension-output' => 'lnc',
 
+        // ALLOW creation...
         'cache.render' => true, // creates a plugin cache called 'render'
         'cache.files' => true, // creates a plugin cache called 'files'
         'cache.lnc' => true, // creates a plugin cache called 'lnc'
+        // actually used config
+        'render' => false,
+        'files' => true,
+        'lnc' => true,
     ],
     'components' => [
-        'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html') {
+        'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html', string $defaultType = 'html') {
             if (option('bnomei.handlebars.component')) {
-                return new Bnomei\Handlebars($name, $type);
+                return new Bnomei\HandlebarsTemplate($name, $type);
             }
-            return new  Kirby\Cms\Template($name, $type);
-        }
+            return new Kirby\Cms\Template($name, $type);
+        },
     ],
     'snippets' => [
-        'plugin-handlebars' => __DIR__ . '/snippets/handlebars.php',
         'handlebars/render' => __DIR__ . '/snippets/handlebars/render.php',
     ],
     'pageMethods' => [
         'handlebars' => function ($template = null, $data = []) {
-            return snippet('plugin-handlebars', [
-                'template' => ($template ? $template : $this->template()),
-                'data' => $this->controller($data)
-            ], true);
-        }
-    ]
+            return \Bnomei\Handlebars::render(
+                $template ?? $this->template(),
+                $this->controller($data),
+                null,
+                null,
+                true
+            );
+        },
+    ],
 ]);
 
 if (!class_exists('Bnomei\Handlebars')) {
     require_once __DIR__ . '/classes/Handlebars.php';
 }
 
+if (!function_exists('handlebars')) {
+    function handlebars(string $template, $data = [], $return = false): ?string
+    {
+        return \Bnomei\Handlebars::render($template, $data, $return);
+    }
+}
+
 if (!function_exists('hbs')) {
     function hbs(string $template, $data = [], $return = false): ?string
     {
-        $r = \Bnomei\Handlebars::r($template, $data);
-        if($return) {
-            return $r;
-        }
-        echo $r;
-        return null;
+        return \Bnomei\Handlebars::render($template, $data, $return);
     }
 }

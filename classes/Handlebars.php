@@ -1,228 +1,184 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bnomei;
 
-use LightnCandy\LightnCandy;
-use Kirby\Toolkit\F;
-use Kirby\Toolkit\Dir;
+use Kirby\Exception\InvalidArgumentException;
+use Kirby\Toolkit\A;
 
-class Handlebars extends \Kirby\Cms\Template
+final class Handlebars
 {
-    public function extension(): string
-    {
-        return (string) option('bnomei.handlebars.extension.output');
-    }
+    /*
+     * @var string
+     */
+    private $renderCacheId;
 
-    public function file(): string
-    {
-        $output = self::loadTemplate($this->name())['output'];
-        return $output;
-    }
+    /*
+     * @var array
+     */
+    private $lncFiles;
 
-    public function render(array $data = []): string
+    /**
+     * Handlebars constructor.
+     * @param array $options
+     */
+    public function __construct(array $options = [])
     {
-        return static::r($this->name(), $data, $this->root(), $this->file());
-    }
-
-    private static $compileOptions = null;
-    private static function compileOptions()
-    {
-        if (self::$compileOptions) {
-            return self::$compileOptions;
-        }
-
-        $flags = LightnCandy::FLAG_ELSE;
-        if (option('bnomei.handlebars.no-escape')) {
-            $flags |= LightnCandy::FLAG_NOESCAPE;
-        }
-        // NOTE: current will not notice change between debug and not. l'n'c debug is not supported here yet.
-        // if (option('debug')) {
-        //     $flags |= LightnCandy::FLAG_RENDER_DEBUG;
-        // }
-        self::$compileOptions = [
-            'flags' => $flags,
-            'partialresolver' => function ($cx, $name) {
-                $string = self::loadTemplate($name)['string'];
-                if (!$string) {
-                    $string = "[partial ($name) not found]";
-                }
-                return $string;
-            }
+        $defaults = [
+            'debug' => option('debug'),
+            'extension-output' => option('bnomei.handlebars.extension-output'),
+            'extension-input' => option('bnomei.handlebars.extension-input'),
+            'cache.render' => option('bnomei.handlebars.cache.render'),
         ];
-        // if (option('debug')) {
-        //     self::$compileOptions = array_merge(self::$compileOptions, [
-        //         'renderex' => '// Compiled at ' . date('Y-m-d h:i:s'),
-        //         'prepartial' => function ($context, $template, $name) {
-        //             return "<!-- partial: $name -->".$template;
-        //         },
-        //     ]);
-        // }
-        return self::$compileOptions;
+        $this->options = array_merge($defaults, $options);
+        $this->options['cache.render'] = $this->options['cache.render'] && !$this->options['debug'];
+
+        $this->lncFiles = LncFiles::singleton($this->options);
+
+        if ($this->option('debug')) {
+            kirby()->cache('bnomei.handlebars.render')->flush();
+        }
     }
 
-    private static function templateInput($filename, $force = false)
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public function option($key = null)
     {
-        $filePath = null;
-        $isPartial = false;
-        $inputExtension = '.' . option('bnomei.handlebars.extension.input');
-
-        if ($force || option('debug')) {
-            kirby()->cache('bnomei.handlebars.files')->flush();
+        if ($key) {
+            return A::get($this->options, $key);
         }
-
-        $filesCache = kirby()->cache('bnomei.handlebars.files');
-        $filesPartials = $filesCache->get('partials');
-        if (!$filesPartials) {
-            $dirPartials = option('bnomei.handlebars.dir.partials');
-            if (is_callable($dirPartials)) {
-                $dirPartials = $dirPartials();
-            }
-            $filesPartials = \Kirby\Toolkit\Dir::index($dirPartials, true, null, $dirPartials);
-            $filesCache->set('partials', $filesPartials);
-        }
-        $filesTemplates = $filesCache->get('templates');
-        if (!$filesTemplates) {
-            $dirTemplates = option('bnomei.handlebars.dir.templates');
-            if (is_callable($dirTemplates)) {
-                $dirTemplates = $dirTemplates();
-            }
-            $filesTemplates = \Kirby\Toolkit\Dir::index($dirTemplates, true, null, $dirTemplates);
-            $filesCache->set('templates', $filesTemplates);
-        }
-
-        // Partials
-        foreach ($filesPartials as $partial) {
-            if (is_file($partial) && basename($partial, $inputExtension) == $filename) {
-                $filePath = $partial;
-                $isPartial = true;
-                break;
-            }
-        }
-
-        // Templates
-        if (!$filePath) {
-            foreach ($filesTemplates as $template) {
-                if (is_file($template) && basename($template, $inputExtension) == $filename) {
-                    $filePath = $template;
-                    break;
-                }
-            }
-        }
-
-        if (!$filePath && !$force) {
-            // not found force cache update and try again once
-            return self::templateInput($filename, true);
-        }
-
-        if (!$filePath) {
-            // fallback to default
-            return self::templateInput('default', true);
-        }
-
-        return compact('filePath', 'isPartial', 'filename');
+        return $this->options;
     }
 
-    private static function templateOutput($filename, $isPartial = false)
+    /**
+     * @param $file
+     * @return string
+     */
+    public function name($file): string
     {
-        if ($isPartial) {
-            $filename = '@' . $filename;
-        }
-        return kirby()->roots()->cache() . DIRECTORY_SEPARATOR .
-            'bnomei' . DIRECTORY_SEPARATOR . 'handlebars' . DIRECTORY_SEPARATOR . 'lnc' . DIRECTORY_SEPARATOR .
-            $filename . '.' . option('bnomei.handlebars.extension.output');
+        $name = basename($file, '.' . $this->option('extension-input'));
+        $name = str_replace('@', '', $name);
+        return $name;
     }
 
-    private static $templates = [];
-    public static function loadTemplate($template)
+    /**
+     * @param $name
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public function file($name): string {
+        return $this->lncFiles->hbsFile($name);
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function prune(array $data): array
     {
-        $template = str_replace('@', '', $template);
-        $string = null;
-        $needsUpdate = false;
-        $inputData = self::templateInput($template);
-        $input = $inputData['filePath'];
-        if (!$input) {
-            return compact('string', 'needsUpdate', 'inputData');
-        }
-        $isPartial = $inputData['isPartial'];
-        $output = self::templateOutput($template, $isPartial);
-
-        // TODO: what if partial changed but template did not?
-
-        // file cache since kirby\cache will not work with include
-        if (option('debug') || !F::exists($output) || (F::exists($output) && F::modified($output) < F::modified($input))) {
-            $t = F::read($input);
-
-            // fix fractal.build partial syntax
-            $string = \Kirby\Toolkit\Str::replace($t, '{{> @', '{{> ');
-            if (!$isPartial) {
-                $compileOptions = self::compileOptions();
-                $string = LightnCandy::compile($t, $compileOptions);
-            }
-            F::write($output, $string);
-            static::$templates[$output] = $string;
-            $needsUpdate = true;
-        } else {
-            $string = \Kirby\Toolkit\A::get(static::$templates, $output);
-            if (!$string) {
-                $string = F::read($output);
-                static::$templates[$output] = $string;
+        // remove kirby objects to allow json serialization for cache
+        $prune = ['kirby', 'site', 'pages', 'page'];
+        foreach ($prune as $key) {
+            if (array_key_exists($key, $data)) {
+                unset($data[$key]);
             }
         }
-
-        return compact('string', 'needsUpdate', 'input', 'output');
+        return $data;
     }
 
-    public static function r($name, array $data = [], $root = null, $file = null): string
+    /**
+     * @param string $template
+     * @param array $data
+     * @return string|null
+     */
+    public function read(string $template, array $data): ?string
     {
-        $result = null;
-        $renderCacheId = null;
-        $ext = '.' . option('bnomei.handlebars.extension.output');
-        $template = $file ? basename($file, $ext) : $name;
-
-        // remove objects to allow json serialization
-        foreach (['kirby', 'site', 'pages', 'page'] as $k) {
-            if (\Kirby\Toolkit\A::get($data, $k)) {
-                unset($data[$k]);
-            }
+        if (!$this->option('cache.render')) {
+            $this->renderCacheId = null;
+            return null;
         }
 
-        try {
-            if (option('bnomei.handlebars.cache.render')) {
-                $renderCache = kirby()->cache('bnomei.handlebars.render');
+        $this->renderCacheId = $template . '-' . crc32(json_encode($data));
 
-                // https://stackoverflow.com/questions/3665247/fastest-hash-for-non-cryptographic-uses#3665527
-                $renderCacheId = $template . '-' . crc32(json_encode($data));
-                if (option('debug')) {
-                    $renderCache->flush();
-                } else {
-                    $result = $renderCache->get($renderCacheId);
-                }
-            }
-
-            $loadTemplate = self::loadTemplate($template);
-            $php = $loadTemplate['string'];
-            if (!$php) {
-                return '';
-            }
-
-            if (!$result || $loadTemplate['needsUpdate']) {
-                // NOTE: since LightnCandy returns a Closure and
-                // these can not be packed into a var as string
-                // a snippet is used to echo rendering
-
-                $result = snippet('handlebars/render', [
-                    'precompiledTemplate' => $php,
-                    'data' => $data,
-                ], true);
-
-                if ($renderCacheId) {
-                    $renderCache->set($renderCacheId, $result);
-                }
-            }
-        } catch (Exception $ex) {
-            return $ex->getMessage();
-        }
-
-        return $result ? $result : '';
+        return kirby()->cache('bnomei.handlebars.render')->get($this->renderCacheId);
     }
+
+    /**
+     * @return mixed
+     */
+    public function renderCacheId()
+    {
+        return $this->renderCacheId;
+    }
+
+    /**
+     * @param string|null $renderCacheId
+     * @param string $result
+     * @return bool
+     */
+    public function write(?string $renderCacheId = null, string $result): bool
+    {
+        if ($renderCacheId && $this->option('cache.render')) {
+            return kirby()->cache('bnomei.handlebars.render')->set($renderCacheId, $result);
+        }
+        return false;
+    }
+
+    /**
+     * @param string $template
+     * @param array $data
+     * @return string
+     */
+    public function handlebars(string $template, array $data): string
+    {
+        // NOTE: since LightnCandy returns a Closure and
+        // these can not be packed into a var as string
+        // a snippet is used to echo rendering
+        return snippet('handlebars/render', [
+            'precompiledTemplate' => $this->lncFiles->precompiledTemplate($template),
+            'data' => $data,
+        ], true);
+    }
+
+    /**
+     * @param $name
+     * @param array $data
+     * @param null $root
+     * @param null $file
+     * @param bool $return
+     * @return string|null
+     */
+    public function render($name, array $data = [], $root = null, $file = null, $return = false): ?string
+    {
+        $template = $this->name($file ?? $name);
+        $data = $this->prune($data);
+
+        $result = $this->read($template, $data);
+
+        if (!$result) {
+            $result = $this->handlebars($template, $data);
+        }
+
+        $this->write($this->renderCacheId, $result);
+
+        if (!$return) {
+            echo $result;
+            return null;
+        }
+        return $result;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function flush()
+    {
+        kirby()->cache('bnomei.handlebars.render')->flush();
+        $this->lncFiles->flush();
+    }
+
+
 }

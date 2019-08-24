@@ -7,6 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Bnomei\\Handlebars' => $baseDir . '/classes/Handlebars.php',
+    'Bnomei\\HandlebarsTemplate' => $baseDir . '/classes/HandlebarsTemplate.php',
+    'Bnomei\\LncFile' => $baseDir . '/classes/LncFile.php',
+    'Bnomei\\LncFiles' => $baseDir . '/classes/LncFiles.php',
     'Kirby\\ComposerInstaller\\CmsInstaller' => $vendorDir . '/getkirby/composer-installer/src/ComposerInstaller/CmsInstaller.php',
     'Kirby\\ComposerInstaller\\Installer' => $vendorDir . '/getkirby/composer-installer/src/ComposerInstaller/Installer.php',
     'Kirby\\ComposerInstaller\\Plugin' => $vendorDir . '/getkirby/composer-installer/src/ComposerInstaller/Plugin.php',
