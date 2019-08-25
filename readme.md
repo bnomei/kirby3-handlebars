@@ -188,37 +188,17 @@ return function ($site, $page, $kirby) {
 
 ## Settings
 
-All settings need to be prefixed with `bnomei.handlebars.`
-
-#### component
-- default: `true` 
-if `false` no templating will be handled by this plugin and you need to use the `hbs()`/`handlebars()` functions.
-
-#### no-escape
-- default: `true`
-By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formated as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly.
-Alternatively you can set it to `false` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html).
-
-#### dir-templates
-- default: callback returning `kirby()->roots()->templates()`
-
-#### dir-partials
-- default: callback returning `kirby()->roots()->templates().'/partials'`
-
-#### extension-input
-- default: `hbs`
-
-#### extension-output
-- default: `lnc`, hbs compiled to php
-
-#### render
-- default: `false`, cache render based on hash of data
-
-#### files
-- default: `true`, cache paths of template and partial files
-
-#### lnc
-- default: `true`, cache compiled php
+| bnomei.handlebars.           | Default        | Description               |            
+|---------------------------|----------------|---------------------------|
+| component | `true` | if `false` no templating will be handled by this plugin and you need to use the `hbs()`/`handlebars()` functions. |
+| no-escape | `true` | By default data sent to template [will NOT be escaped](https://zordius.github.io/HandlebarsCookbook/LC-FLAG_NOESCAPE.html). This way your templates can render data formated as html. You can use Kirbys Field Methods `$field->kirbytext()`, `$field->html()` or the `Kirby\Toolkit\Str`-Class functions to escape your text properly. Alternatively you can set it to `false` and use `{{{ var }}}` [triple mustaches](https://handlebarsjs.com/expressions.html). |
+| dir-templates | `callback`  | returning `kirby()->roots()->templates()` |
+| dir-partials | `callback`  | returning`kirby()->roots()->templates().'/partials'` |
+| extension-input | `hbs` | |
+| extension-output | `lnc` | hbs compiled to php |
+| render | `false` | cache render based on hash of data |
+| files | `true` | cache paths of template and partial files |
+| lnc | `true` | cache compiled php |
 
 ## Dependencies
 
