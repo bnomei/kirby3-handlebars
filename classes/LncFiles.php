@@ -38,11 +38,10 @@ final class LncFiles
         $this->options['cache.files'] = $this->options['cache.files'] && !$this->options['debug'];
         $this->options['cache.lnc'] = $this->options['cache.lnc'] && !$this->options['debug'];
 
-        if (is_callable($this->options['dir-templates'])) {
-            $this->options['dir-templates'] = $this->options['dir-templates']();
-        }
-        if (is_callable($this->options['dir-partials'])) {
-            $this->options['dir-partials'] = $this->options['dir-partials']();
+        foreach ($this->options as $key => $call) {
+            if (is_callable($call)) {
+                $this->options[$key] = $call();
+            }
         }
 
         if ($this->option('debug')) {

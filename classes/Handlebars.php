@@ -34,6 +34,12 @@ final class Handlebars
         $this->options = array_merge($defaults, $options);
         $this->options['cache.render'] = $this->options['cache.render'] && !$this->options['debug'];
 
+        foreach ($this->options as $key => $call) {
+            if (is_callable($call)) {
+                $this->options[$key] = $call();
+            }
+        }
+
         $this->lncFiles = LncFiles::singleton($this->options);
 
         if ($this->option('debug')) {
