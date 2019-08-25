@@ -35,7 +35,7 @@ final class Handlebars
         $this->options['cache.render'] = $this->options['cache.render'] && !$this->options['debug'];
 
         foreach ($this->options as $key => $call) {
-            if (is_callable($call)) {
+            if (is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
                 $this->options[$key] = $call();
             }
         }

@@ -39,7 +39,7 @@ final class LncFiles
         $this->options['cache.lnc'] = $this->options['cache.lnc'] && !$this->options['debug'];
 
         foreach ($this->options as $key => $call) {
-            if (is_callable($call)) {
+            if (is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
                 $this->options[$key] = $call();
             }
         }
