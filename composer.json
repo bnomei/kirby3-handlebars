@@ -65,6 +65,7 @@
     "kirby-cms-path": "tests/kirby"
   },
   "suggest": {
-    "bnomei/kirby3-lapse": "For faster and automatic caching based on modification of Kirby Objects"
+    "bnomei/kirby3-lapse": "For faster and automatic caching based on modification of Kirby Objects",
+    "bnomei/kirby3-janitor": "Use a Panel Button or PHP code to clear the cache"
   }
 }
