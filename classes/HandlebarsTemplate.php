@@ -6,7 +6,6 @@ namespace Bnomei;
 
 use Kirby\Cms\Template;
 
-// @codeCoverageIgnore
 final class HandlebarsTemplate extends Template
 {
     /*
