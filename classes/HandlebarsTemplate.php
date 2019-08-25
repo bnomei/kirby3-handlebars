@@ -34,7 +34,7 @@ final class HandlebarsTemplate extends Template
      */
     public function extension(): string
     {
-        return option('bnomei.handlebars.extension-output');
+        return option('bnomei.handlebars.extension-input');
     }
 
     /**
