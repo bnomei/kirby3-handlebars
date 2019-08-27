@@ -5,6 +5,7 @@
     "@frctl/fractal": "^1.1.7"
   },
   "scripts": {
+    "preinstall": "mkdir -p ./node_modules && touch ./node_modules/.metadata_never_index",
     "dev": "fractal start --sync",
     "build": "fractal build"
   }
