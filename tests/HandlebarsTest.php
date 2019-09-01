@@ -67,6 +67,17 @@ class HandlebarsTest extends TestCase
 
     }
 
+    public function testFieldsToValue()
+    {
+        $hbs = new Handlebars();
+        $data = [
+            'titleFromValue' => page('home')->title(),
+            'titleFromField' => page('home')->title()->value(),
+        ];
+        $this->assertCount(2, $hbs->fieldsToValue($data));
+
+    }
+
     public function testRead()
     {
         $hbs = new Handlebars();

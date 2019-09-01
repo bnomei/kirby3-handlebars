@@ -75,7 +75,8 @@ final class Handlebars
      * @return string
      * @throws InvalidArgumentException
      */
-    public function file($name): string {
+    public function file($name): string
+    {
         return $this->lncFiles->hbsFile($name);
     }
 
@@ -92,6 +93,21 @@ final class Handlebars
                 unset($data[$key]);
             }
         }
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function fieldsToValue(array $data): array
+    {
+        $data = array_map(static function ($object) {
+            if ($object && is_object($object) && is_a($object, 'Kirby\Cms\Field')) {
+                return $object->value();
+            }
+            return $object;
+        }, $data);
         return $data;
     }
 
@@ -161,6 +177,7 @@ final class Handlebars
     {
         $template = $this->name($file ?? $name);
         $data = $this->prune($data);
+        $data = $this->fieldsToValue($data);
 
         $result = $this->read($template, $data);
 
