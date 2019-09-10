@@ -43,7 +43,7 @@ Kirby::plugin('bnomei/handlebars', [
     ],
     'pageMethods' => [
         'handlebars' => function ($template = null, $data = []) {
-            return \Bnomei\Handlebars::render(
+            return (new \Bnomei\Handlebars)->render(
                 $template ?? $this->template(),
                 $this->controller($data),
                 null,
