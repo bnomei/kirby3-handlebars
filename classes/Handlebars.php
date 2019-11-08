@@ -29,10 +29,10 @@ final class Handlebars
             'debug' => option('debug'),
             'extension-output' => option('bnomei.handlebars.extension-output'),
             'extension-input' => option('bnomei.handlebars.extension-input'),
-            'cache.render' => option('bnomei.handlebars.cache.render'),
+            'render' => option('bnomei.handlebars.render'),
         ];
         $this->options = array_merge($defaults, $options);
-        $this->options['cache.render'] = $this->options['cache.render'] && !$this->options['debug'];
+        $this->options['render'] = $this->options['render'] && !$this->options['debug'];
 
         foreach ($this->options as $key => $call) {
             if (is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
@@ -118,7 +118,7 @@ final class Handlebars
      */
     public function read(string $template, array $data): ?string
     {
-        if (!$this->option('cache.render')) {
+        if (!$this->option('render')) {
             $this->renderCacheId = null;
             return null;
         }
@@ -143,7 +143,7 @@ final class Handlebars
      */
     public function write(?string $renderCacheId = null, string $result): bool
     {
-        if ($renderCacheId && $this->option('cache.render')) {
+        if ($renderCacheId && $this->option('render')) {
             return kirby()->cache('bnomei.handlebars.render')->set($renderCacheId, $result);
         }
         return false;
