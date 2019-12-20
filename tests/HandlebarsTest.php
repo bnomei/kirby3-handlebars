@@ -37,7 +37,7 @@ class HandlebarsTest extends TestCase
         $hbs = new Handlebars([
             'debug' => true,
         ]);
-        $this->assertFalse($hbs->option('cache.render'));
+        $this->assertFalse($hbs->option('render'));
     }
 
     public function testName()
@@ -85,13 +85,13 @@ class HandlebarsTest extends TestCase
 
         $data = ['hello' => 'world'];
 
-        $hbs = new Handlebars(['cache.render' => true, 'debug' => true]);
-        $this->assertFalse($hbs->option('cache.render'));
+        $hbs = new Handlebars(['render' => true, 'debug' => true]);
+        $this->assertFalse($hbs->option('render'));
         $this->assertNull($hbs->read('default', $data));
         $this->assertFalse($hbs->write($hbs->renderCacheId(), 'hello world render'));
 
-        $hbs = new Handlebars(['cache.render' => true]);
-        $this->assertTrue($hbs->option('cache.render'));
+        $hbs = new Handlebars(['render' => true]);
+        $this->assertTrue($hbs->option('render'));
 
         $this->assertNull($hbs->read('default', $data));
         $this->assertEquals('default-3624485329', $hbs->renderCacheId());
@@ -135,7 +135,7 @@ class HandlebarsTest extends TestCase
 
     public function testFlush()
     {
-        $hbs = new Handlebars(['cache.render' => true]);
+        $hbs = new Handlebars(['render' => true]);
         $data = ['hello' => 'world'];
 
         $this->assertNull($hbs->read('default', $data));
