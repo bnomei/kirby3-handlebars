@@ -113,7 +113,7 @@ final class LncFile
     {
         // lazy loading
         if($php === null) {
-            if ($this->target() && A::get($this->data, 'cache.lnc') && F::exists($this->target()) ) {
+            if ($this->target() && A::get($this->data, 'lnc') && F::exists($this->target()) ) {
                 $php = F::read($this->target());
             }
         }
@@ -123,7 +123,7 @@ final class LncFile
             $this->data['php'] = $php;
 
             // write
-            if ($this->target() && A::get($this->data, 'cache.lnc')) {
+            if ($this->target() && A::get($this->data, 'lnc')) {
                 F::write($this->target(), $php);
             }
         }

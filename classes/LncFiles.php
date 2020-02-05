@@ -28,15 +28,15 @@ final class LncFiles
             'no-escape' => option('bnomei.handlebars.no-escape'),
             'extension-input' => option('bnomei.handlebars.extension-input'),
             'extension-output' => option('bnomei.handlebars.extension-output'),
-            'cache.files' => option('bnomei.handlebars.cache.files'),
-            'cache.lnc' => option('bnomei.handlebars.cache.lnc'),
+            'files' => option('bnomei.handlebars.files'),
+            'lnc' => option('bnomei.handlebars.lnc'),
             'dir-templates' => option('bnomei.handlebars.dir-templates'),
             'dir-partials' => option('bnomei.handlebars.dir-partials'),
         ];
         $this->options = array_merge($defaults, $options);
 
-        $this->options['cache.files'] = $this->options['cache.files'] && !$this->options['debug'];
-        $this->options['cache.lnc'] = $this->options['cache.lnc'] && !$this->options['debug'];
+        $this->options['files'] = $this->options['files'] && !$this->options['debug'];
+        $this->options['lnc'] = $this->options['lnc'] && !$this->options['debug'];
 
         foreach ($this->options as $key => $call) {
             if (is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
@@ -165,7 +165,7 @@ final class LncFiles
                     'target' => $this->target($file, $dir[1]),
                     'partial' => $dir[1],
                     'modified' => F::modified($file),
-                    'cache.lnc' => $this->option('cache.lnc'),
+                    'lnc' => $this->option('lnc'),
                 ]);
             }
         }
@@ -209,7 +209,7 @@ final class LncFiles
     {
         $files = [];
 
-        if ($this->option('cache.files')) {
+        if ($this->option('files')) {
             $files = kirby()->cache('bnomei.handlebars.files')->get(
                 $this->modified(),
                 []
@@ -231,7 +231,7 @@ final class LncFiles
      */
     public function write(array $files): bool
     {
-        if (!$this->option('cache.files')) {
+        if (!$this->option('files')) {
             return false;
         }
         return kirby()->cache('bnomei.handlebars.files')->set(
@@ -317,6 +317,8 @@ final class LncFiles
         // TODO: https://github.com/getkirby/ideas/issues/390
         return implode([
             kirby()->roots()->cache(),
+            DIRECTORY_SEPARATOR,
+            'plugins',
             DIRECTORY_SEPARATOR,
             'bnomei',
             DIRECTORY_SEPARATOR,
