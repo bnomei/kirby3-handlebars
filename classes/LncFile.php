@@ -98,11 +98,21 @@ final class LncFile
         $data['needsUpdate'] = false;
         if ($target && F::exists($target) === false) {
             $data['needsUpdate'] = true;
+        } elseif ($source && F::exists($target) && F::modified($source) > F::modified($target)) {
+            $data['needsUpdate'] = true;
         } elseif ($source && F::modified($source) !== $data['modified']) {
             $data['needsUpdate'] = true;
         }
 
         return $data;
+    }
+
+    public function writePartial()
+    {
+        if ($this->partial()) {
+            $this->data['needsUpdate'] = false;
+            F::write($this->target(), ''); // touch
+        }
     }
 
     /**
@@ -125,6 +135,7 @@ final class LncFile
             // write
             if ($this->target() && A::get($this->data, 'lnc')) {
                 F::write($this->target(), $php);
+                $this->data['needsUpdate'] = false;
             }
         }
 

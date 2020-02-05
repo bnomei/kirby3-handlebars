@@ -12,10 +12,15 @@ use LightnCandy\LightnCandy;
 
 final class LncFiles
 {
-    /*
+    /**
      * @var array
      */
     private $files;
+
+    /**
+     * @var string
+     */
+    private $modified;
 
     /**
      * LncFiles constructor.
@@ -115,6 +120,9 @@ final class LncFiles
      */
     public function modified(array $files = []): string
     {
+        if ($this->modified) {
+            return $this->modified;
+        }
         if (count($files) === 0) {
             $files = array_merge(
                 $this->filterDirByExtension(
@@ -133,7 +141,8 @@ final class LncFiles
             $modified[] = F::modified($file);
         }
 
-        return strval(crc32(implode($modified)));
+        $this->modified = strval(crc32(implode($modified)));
+        return $this->modified;
     }
 
     /**
@@ -222,7 +231,7 @@ final class LncFiles
             return $files;
         }
 
-        return  $files = $this->scan();
+        return $this->scan();
     }
 
     /**
@@ -249,8 +258,16 @@ final class LncFiles
     {
         $this->files = $this->load();
 
+        $anyPartialNeedsUpdate = false;
         foreach ($this->files as $lncFile) {
-            if ($lncFile->needsUpdate() && !$lncFile->partial()) {
+            if ($lncFile->partial() && $lncFile->needsUpdate()) {
+                $anyPartialNeedsUpdate = true;
+                $lncFile->writePartial();
+            }
+        }
+
+        foreach ($this->files as $lncFile) {
+            if (!$lncFile->partial() && ($anyPartialNeedsUpdate || $lncFile->needsUpdate())) {
                 $lncFile->php($this->compile($lncFile));
             }
         }
