@@ -251,6 +251,7 @@ return function ($site, $page, $kirby) {
 | render | `false` | cache render based on hash of data |
 | files | `true` | cache paths of template and partial files |
 | lnc | `true` | cache compiled php |
+| queries | `[...]` | an array of predefined queries you can use in your templates |
 
 ## Dependencies
 
