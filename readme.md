@@ -65,7 +65,7 @@ return function ($site, $page, $kirby) {
 **Data provider B: site/models/home.php**
 ```php
 <?php
-class HomePage extends Page implements \Bnomei\HandlebarsData
+class HomePage extends Page
 {
     public function handlebarsData(): array
     {
