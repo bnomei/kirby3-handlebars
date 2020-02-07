@@ -146,7 +146,7 @@ You can also use queries when providing data from controllers or models.
 
 ```php
 return [
-    'textWithQuery' => "Some field value {{ page.myfield }} at {{ page.date.toDate('c')",
+    'textWithQuery' => "Some field value {{ page.myfield }} at {{ page.date.toDate('c') }}",
     'kirbytextWithQuery' => $page->text()->kirbytext(),
 ];
 ```
