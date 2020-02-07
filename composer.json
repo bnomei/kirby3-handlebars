@@ -1,7 +1,7 @@
 {
   "name": "bnomei/kirby3-handlebars",
   "type": "kirby-plugin",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "description": "Kirby 3 Component for semantic templates with Handlebars and Mustache",
   "authors": [
@@ -26,7 +26,10 @@
     "fractal",
     "fractal.build",
     "hbs",
-    "lightncandy"
+    "lightncandy",
+    "query-language",
+    "controller",
+    "model"
   ],
   "autoload": {
     "psr-4": {
@@ -59,13 +62,18 @@
     "dist": [
       "composer install --no-dev --optimize-autoloader",
       "git rm -rf --cached .; git add .;"
+    ],
+    "kirby": [
+      "composer install",
+      "composer update",
+      "composer install --working-dir=tests/kirby --no-dev --optimize-autoloader",
+      "composer update --working-dir=tests/kirby"
     ]
   },
   "extra": {
     "kirby-cms-path": "tests/kirby"
   },
   "suggest": {
-    "bnomei/kirby3-lapse": "For faster and automatic caching based on modification of Kirby Objects",
-    "bnomei/kirby3-janitor": "Use a Panel Button or PHP code to clear the cache"
+    "bnomei/kirby3-lapse": "For faster and automatic caching based on modification of Kirby Objects"
   }
 }

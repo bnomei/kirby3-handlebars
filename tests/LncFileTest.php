@@ -13,7 +13,7 @@ class LncFileTest extends TestCase
 
     public function setUp(): void
     {
-        $this->target = kirby()->roots()->cache() . '/bnomei/handlebars/lnc/default.lnc';
+        $this->target = kirby()->roots()->cache() . '/plugins/bnomei/handlebars/lnc/default.lnc';
         F::write($this->target, 'tmp');
 
         $this->default = kirby()->roots()->templates() . '/default.hbs';
@@ -64,7 +64,7 @@ class LncFileTest extends TestCase
             'modified' => F::modified($this->default),
             'partial' => false,
             'name' => 'default',
-            'cache.lnc' => true,
+            'lnc' => true,
         ]);
         $this->assertEquals('tmp', $file->php());
 

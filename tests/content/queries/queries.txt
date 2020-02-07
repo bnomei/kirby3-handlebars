@@ -1,0 +1,5 @@
+Title: Queries
+
+----
+
+Text: {{ site.homepage.title }} is where I rest my head.

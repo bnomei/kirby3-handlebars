@@ -82,24 +82,24 @@ class LncFilesTest extends TestCase
     public function testLoad()
     {
         $files = new LncFiles();
-        $this->assertTrue($files->option('cache.files'));
+        $this->assertTrue($files->option('files'));
 
         $scan = $files->load();
         $this->assertIsArray($scan);
-        $this->assertCount(4, $scan);
+        $this->assertCount(5, $scan);
     }
 
     public function testWrite()
     {
         $files = new LncFiles();
-        $this->assertTrue($files->option('cache.files'));
+        $this->assertTrue($files->option('files'));
         $scan = $files->load();
         $this->assertTrue($files->write($scan));
 
         $files = new LncFiles([
-            'cache.files' => false,
+            'files' => false,
         ]);
-        $this->assertFalse($files->option('cache.files'));
+        $this->assertFalse($files->option('files'));
         $scan = $files->load();
         $this->assertFalse($files->write($scan));
     }
@@ -107,7 +107,7 @@ class LncFilesTest extends TestCase
     public function testLoadFromCache()
     {
         $files = new LncFiles();
-        $this->assertTrue($files->option('cache.files'));
+        $this->assertTrue($files->option('files'));
 
         $files->write($files->load());
         $files->load();
@@ -214,7 +214,7 @@ class LncFilesTest extends TestCase
         $files = new LncFiles();
         $files->registerAllTemplates();
         $this->assertIsArray($files->files());
-        $this->assertCount(4, $files->files());
+        $this->assertCount(5, $files->files());
 
         // $this->assertTrue($files->files());
         // TODO: checks
@@ -224,7 +224,7 @@ class LncFilesTest extends TestCase
     {
         $files = new LncFiles();
         $this->assertEquals(
-            __DIR__ . '/site/cache/bnomei/handlebars/lnc',
+            __DIR__ . '/site/cache/plugins/bnomei/handlebars/lnc',
             $files->lncCacheRoot()
         );
     }

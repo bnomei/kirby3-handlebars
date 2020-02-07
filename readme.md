@@ -29,7 +29,9 @@ This plugin is free but if you use it in a commercial project please consider to
 ## Usage as Template Component
 
 - Put your handlebars templates in the `site/templates/` folder.
-- Prepare data in controllers stored at `site/controllers/*` to be available in the templates.
+- Prepare data in 
+    - A) controllers stored at `site/controllers/*` to be available in the templates or 
+    - B) use a models and implement `handlebarsData(): array`
 - In case you do not have a handlebar template with matching name it will fallback to the required `default.hbs` file.
 
 **content/home/home.txt**
@@ -43,7 +45,7 @@ Title: Home
 {{#counting}} <br> - {{ label }} {{/counting}}
 ```
 
-**site/controllers/home.php**
+**Data provider A: site/controllers/home.php**
 ```php
 <?php
 return function ($site, $page, $kirby) {
@@ -59,6 +61,26 @@ return function ($site, $page, $kirby) {
 };
 ```
 > Note: `kirby`, `site`, `pages` and `page` can **not** be used as top-level data keys. They will be overwritten by Kirby Objects and later pruned by the plugin for serialization.
+
+**Data provider B: site/models/home.php**
+```php
+<?php
+class HomePage extends Page implements \Bnomei\HandlebarsData
+{
+    public function handlebarsData(): array
+    {
+        return [
+            'title' => $this->title(), // Home
+            'c'=> 'Cassia',
+            'counting' => [
+                ['label' => 1],
+                ['label' => 2],
+                ['label' => 3],
+            ],
+        ];
+    }
+}
+```
 
 **http://localhost:80/**
 ```html
@@ -100,6 +122,35 @@ return function ($site, $page, $kirby) {
 ```html
 Piece of 🍕
 ```
+
+### Queries
+
+**default queries**
+
+The plugin has a few queries built in that you can directly use in your handlebar templates. You can override these in setting the `bnomei.handlebars.queries` option.
+
+```handlebars
+{{ site.title }}
+{{ site.url }}
+{{ page.title }}
+{{ page.url }}
+{{ page.slug }}
+{{ page.template }}
+```
+
+**dynamic queries**
+
+You can also use queries when providing data from controllers or models.
+
+> HINT: This allows you to write queries in textarea fields as well!
+
+```php
+return [
+    'textWithQuery' => "Some field value {{ page.myfield }} at {{ page.date.toDate('c')",
+    'kirbytextWithQuery' => $page->text()->kirbytext(),
+];
+```
+
 
 ## Rapid Localhost Development
 
@@ -152,7 +203,7 @@ Render output is **not** cached by default. You can activate it using the `rende
 ```php
 <?php
 return [
-    'bnomei.handlebars.cache.render' => true, // default: false        
+    'bnomei.handlebars.render' => true, // default: false        
 ];
 ```
 

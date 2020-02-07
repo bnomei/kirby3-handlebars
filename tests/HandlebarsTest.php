@@ -32,7 +32,7 @@ class HandlebarsTest extends TestCase
     {
         $hbs = new Handlebars();
         $this->assertIsArray($hbs->option());
-        $this->assertCount(4, $hbs->option());
+        $this->assertCount(5, $hbs->option());
 
         $hbs = new Handlebars([
             'debug' => true,

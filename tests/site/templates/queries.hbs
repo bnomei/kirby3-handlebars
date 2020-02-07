@@ -1,0 +1,21 @@
+<h1>{{ textWithQuery }}</h1>
+<blockquote>{{ kirbytextWithQuery }}</blockquote>
+
+<h2>from plugin config.queries</h2>
+<ul>
+  <li>{{ page.url }}</li>
+  <li>{{ page.title }}</li>
+</ul>
+
+<h2>from data</h2>
+<ul>
+  <li>site.index.count => {{ count }}</li>
+  <li>kirby.version => {{ k3v }}</li>
+</ul>
+
+<h2>arrays</h2>
+<ul>
+  {{# toppings }}
+  <li>{{ name }}</li>
+  {{/ toppings }}
+</ul>

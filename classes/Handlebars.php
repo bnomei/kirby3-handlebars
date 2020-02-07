@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Bnomei;
 
+use Kirby\Cms\Field;
+use Kirby\Cms\Page;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Toolkit\A;
+use Kirby\Toolkit\Str;
 
 final class Handlebars
 {
@@ -29,6 +32,7 @@ final class Handlebars
             'debug' => option('debug'),
             'extension-output' => option('bnomei.handlebars.extension-output'),
             'extension-input' => option('bnomei.handlebars.extension-input'),
+            'queries' => option('bnomei.handlebars.queries'),
             'render' => option('bnomei.handlebars.render'),
         ];
         $this->options = array_merge($defaults, $options);
@@ -78,6 +82,66 @@ final class Handlebars
     public function file($name): string
     {
         return $this->lncFiles->hbsFile($name);
+    }
+
+    private function array_map_recursive(&$arr, $fn) {
+        return array_map(function($item) use($fn){
+            return is_array($item) ? $this->array_map_recursive($item, $fn) : $fn($item);
+        }, $arr);
+    }
+
+    /**
+     * @param array $data
+     * @param array $params
+     * @return array
+     */
+    public function queries(array $data, array $params): array
+    {
+        $seperator = '{{ˇ෴ˇ}}';
+        $queries = $this->option('queries', []);
+
+        // add queries from options
+        foreach ($queries as $query) {
+            $result = explode(
+                $seperator,
+                str_replace('.', $seperator, $query) . $seperator . '{{' . $query . '}}'
+            );
+            // thanks @distantnative and @phm_van_den_Kirby
+            $result = array_reduce(array_reverse($result), function($acc, $item){
+                return $acc ? [$item => $acc] : $item;
+            });
+            $data = array_merge_recursive($data, $result);
+        }
+
+        // resolve queries in data
+        $data = $this->array_map_recursive($data, static function($value) use ($params) {
+            if (is_a($value, Field::class)) {
+                $value = $value->value();
+            }
+            if (is_string($value) && Str::contains($value, '{{') && Str::contains($value, '}}')) {
+                return Str::template($value, $params);
+            }
+            return $value;
+       });
+
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param Page $page
+     * @return array
+     */
+    public function modelData(array $data, ?Page $page)
+    {
+        if (! $page) {
+            return $data;
+        }
+        $hbsData = $page->handlebarsData();
+        if ($hbsData && is_array($hbsData) && count($hbsData)) {
+            $data = array_merge_recursive($data, $hbsData);
+        }
+        return $data;
     }
 
     /**
@@ -176,7 +240,16 @@ final class Handlebars
     public function render($name, array $data = [], $root = null, $file = null, $return = false): ?string
     {
         $template = $this->name($file ?? $name);
+
+        $params = [
+            'kirby' => A::get($data, 'kirby'),
+            'site'  => A::get($data, 'site'),
+            'page'  => A::get($data, 'page'),
+        ];
+
         $data = $this->prune($data);
+        $data = $this->modelData($data, $params['page']);
+        $data = $this->queries($data, $params);
         $data = $this->fieldsToValue($data);
 
         $result = $this->read($template, $data);

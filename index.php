@@ -29,6 +29,15 @@ Kirby::plugin('bnomei/handlebars', [
         'render' => false,
         'files' => true,
         'lnc' => true,
+
+        'queries' => [
+            'site.title',
+            'site.url',
+            'page.title',
+            'page.url',
+            'page.slug',
+            'page.template',
+        ],
     ],
     'components' => [
         'template' => function (Kirby\Cms\App $kirby, string $name, string $type = 'html', string $defaultType = 'html') {

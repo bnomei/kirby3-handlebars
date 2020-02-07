@@ -98,7 +98,7 @@ final class LncFile
         $data['needsUpdate'] = false;
         if ($target && F::exists($target) === false) {
             $data['needsUpdate'] = true;
-        } elseif ($source && F::exists($target) && F::modified($source) > F::modified($target)) {
+        } elseif ($source && $target && F::exists($target) && F::modified($source) > F::modified($target)) {
             $data['needsUpdate'] = true;
         } elseif ($source && F::modified($source) !== $data['modified']) {
             $data['needsUpdate'] = true;

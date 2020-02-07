@@ -38,6 +38,7 @@ class ComposerStaticInit390aac013fe4be7c9a7247da74f48428
 
     public static $classMap = array (
         'Bnomei\\Handlebars' => __DIR__ . '/../..' . '/classes/Handlebars.php',
+        'Bnomei\\HandlebarsData' => __DIR__ . '/../..' . '/classes/HandlebarsData.php',
         'Bnomei\\HandlebarsTemplate' => __DIR__ . '/../..' . '/classes/HandlebarsTemplate.php',
         'Bnomei\\LncFile' => __DIR__ . '/../..' . '/classes/LncFile.php',
         'Bnomei\\LncFiles' => __DIR__ . '/../..' . '/classes/LncFiles.php',
