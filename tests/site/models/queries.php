@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
 
-class QueriesPage extends Page implements \Bnomei\HandlebarsData
+use Bnomei\HandlebarsPage;
+
+class QueriesPage extends HandlebarsPage
 {
+    /*
     public function handlebarsData(): array
     {
         return [
@@ -14,10 +17,49 @@ class QueriesPage extends Page implements \Bnomei\HandlebarsData
             ],
 
             'k3v' => '{{ kirby.version }}',
-            'count' => '{{ site.index.count }}', // query to execute
+            'indexcount' => '{{ site.index.count }}', // query to execute
 
             'textWithQuery' => "Some field value {{ page.myfield }} at {{ page.date.toDate('c') }}",
             'kirbytextWithQuery' => $this->text()->kirbytext(),
         ];
+    }
+    */
+
+    public static $handlebarsData = [
+        'toppings',
+        'k3v',
+        'indexcount',
+        'textWithQuery',
+        'kirbytextWithQuery',
+    ];
+
+    public function toppings(): array
+    {
+        return [
+            ['name' => 'cheese'],
+            ['name' => 'salat'],
+            ['name' => 'ketchup'],
+            ['name' => 'onions'],
+        ];
+    }
+
+    public function k3v(): string
+    {
+        return '{{ kirby.version }}';
+    }
+
+    public function indexcount(): string
+    {
+        return '{{ site.index.count }}';
+    }
+
+    public function textWithQuery(): string
+    {
+        return "Some field value {{ page.myfield }} at {{ page.date.toDate('c') }}";
+    }
+
+    public function kirbytextWithQuery(): \Kirby\Cms\Field
+    {
+        return $this->text()->kirbytext();
     }
 }

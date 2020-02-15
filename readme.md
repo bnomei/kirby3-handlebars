@@ -31,7 +31,8 @@ This plugin is free but if you use it in a commercial project please consider to
 - Put your handlebars templates in the `site/templates/` folder.
 - Prepare data in 
     - A) controllers stored at `site/controllers/*` to be available in the templates or 
-    - B) use a models and implement `handlebarsData(): array`
+    - B) use a model and implement `handlebarsData(): array` or
+    - C) use a model, extend from `\Bnomei\HandlebarsPage` and define exported data with `public static $handlebarsData = [];`
 - In case you do not have a handlebar template with matching name it will fallback to the required `default.hbs` file.
 
 **content/home/home.txt**
@@ -62,7 +63,7 @@ return function ($site, $page, $kirby) {
 ```
 > Note: `kirby`, `site`, `pages` and `page` can **not** be used as top-level data keys. They will be overwritten by Kirby Objects and later pruned by the plugin for serialization.
 
-**Data provider B: site/models/home.php**
+**Data provider B with handlebarsData() method: site/models/home.php**
 ```php
 <?php
 class HomePage extends Page
@@ -77,6 +78,33 @@ class HomePage extends Page
                 ['label' => 2],
                 ['label' => 3],
             ],
+        ];
+    }
+}
+```
+
+**Data provider C extending HandlebarsPage Class: site/models/home.php**
+```php
+<?php
+class HomePage extends \Bnomei\HandlebarsPage
+{
+    public static $handlebarsData = [
+        'title',    // $this->title()
+        'c',        // $this->c()
+        'counting'  // $this->counting()
+    ];
+
+    public function c(): string
+    {
+        return 'Cassia';
+    }
+ 
+    public function counting(): array
+    {
+        return [
+            ['label' => 1],
+            ['label' => 2],
+            ['label' => 3],
         ];
     }
 }

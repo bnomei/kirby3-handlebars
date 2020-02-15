@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Bnomei\\Handlebars' => $baseDir . '/classes/Handlebars.php',
     'Bnomei\\HandlebarsData' => $baseDir . '/classes/HandlebarsData.php',
+    'Bnomei\\HandlebarsPage' => $baseDir . '/classes/HandlebarsPage.php',
     'Bnomei\\HandlebarsTemplate' => $baseDir . '/classes/HandlebarsTemplate.php',
     'Bnomei\\LncFile' => $baseDir . '/classes/LncFile.php',
     'Bnomei\\LncFiles' => $baseDir . '/classes/LncFiles.php',
