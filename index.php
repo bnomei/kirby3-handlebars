@@ -70,13 +70,13 @@ if (!class_exists('Bnomei\Handlebars')) {
 if (!function_exists('handlebars')) {
     function handlebars(string $template, $data = [], $return = false): ?string
     {
-        return (new \Bnomei\Handlebars)->render($template, $data, $return);
+        return (new \Bnomei\Handlebars)->render($template, $data, null, $return);
     }
 }
 
 if (!function_exists('hbs')) {
     function hbs(string $template, $data = [], $return = false): ?string
     {
-        return (new \Bnomei\Handlebars)->render($template, $data, $return);
+        return (new \Bnomei\Handlebars)->render($template, $data, null, $return);
     }
 }
