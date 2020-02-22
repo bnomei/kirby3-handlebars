@@ -42,7 +42,7 @@ final class HandlebarsTemplate extends Template
     public function file(): string
     {
         $name = $this->name();
-        if ($this->hasDefaultType() !== $this->type()) {
+        if (!$this->hasDefaultType()) {
             $name = $this->name() . '.' . $this->type();
         }
 
