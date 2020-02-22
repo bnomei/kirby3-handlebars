@@ -41,8 +41,13 @@ final class HandlebarsTemplate extends Template
      */
     public function file(): string
     {
+        $name = $this->name();
+        if ($this->hasDefaultType() !== $this->type()) {
+            $name = $this->name() . '.' . $this->type();
+        }
+
         $file = $this->handlebars->file(
-            $this->name()
+            $name
         );
         return $file;
     }
