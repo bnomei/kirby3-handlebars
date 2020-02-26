@@ -19,7 +19,7 @@ class HandlebarsPage extends Page implements HandlebarsData
         }
 
         $data = array_flip(array_map(static function($value) {
-            if (is_callable($value)) {
+            if (!is_string($value) && is_callable($value)) {
                 $value = $value();
             }
             return $value ? strval($value) : null;
