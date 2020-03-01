@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'debug' => true,
+    'debug' => false, // do not change this. tests depend on it.
 ];

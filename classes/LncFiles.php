@@ -352,8 +352,8 @@ final class LncFiles
     {
         kirby()->cache('bnomei.handlebars.files')->flush();
 
-        $files = glob($this->lncCacheRoot());
-        foreach($files as $file){
+        foreach(Dir::read($this->lncCacheRoot()) as $file) {
+            $file = $this->lncCacheRoot() . '/' . $file;
             if(is_file($file)) {
                 @unlink($file);
             }

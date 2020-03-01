@@ -117,7 +117,6 @@ class LncFilesTest extends TestCase
     {
         $files = new LncFiles();
         F::write($files->lncCacheRoot() . '/test.tmp', 'test');
-
         $files->flush();
         $this->assertTrue(Dir::isEmpty($files->lncCacheRoot()));
     }
