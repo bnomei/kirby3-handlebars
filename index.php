@@ -20,6 +20,7 @@ Kirby::plugin('bnomei/handlebars', [
 
         'extension-input' => 'hbs', // or 'mustache' etc.
         'extension-output' => 'lnc',
+        'extension-kql' => 'json',
 
         // ALLOW creation...
         'cache.render' => true, // creates a plugin cache called 'render'

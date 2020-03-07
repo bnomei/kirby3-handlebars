@@ -6,6 +6,7 @@ namespace Bnomei;
 
 use Kirby\Cms\Field;
 use Kirby\Cms\Page;
+use Kirby\Data\Json;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;
@@ -32,6 +33,7 @@ final class Handlebars
             'debug' => option('debug'),
             'extension-output' => option('bnomei.handlebars.extension-output'),
             'extension-input' => option('bnomei.handlebars.extension-input'),
+            'extension-kql' => option('bnomei.handlebars.extension-kql'),
             'queries' => option('bnomei.handlebars.queries'),
             'render' => option('bnomei.handlebars.render'),
         ];
@@ -144,6 +146,23 @@ final class Handlebars
         return $data;
     }
 
+    public function kqlData(array $data, string $template, ?Page $page = null)
+    {
+        if (! class_exists('Kirby\\Kql\\Kql')) {
+            return $data;
+        }
+        $jsonFile = kirby()->roots()->templates() . '/' . $template. '.' . $this->option('extension-kql');
+        if (! file_exists($jsonFile)) {
+            return $data;
+        }
+        $kqlData = \Kirby\Kql\Kql::run(Json::read($jsonFile), $page);
+
+        if ($kqlData && is_array($kqlData) && count($kqlData)) {
+            $data = array_merge_recursive($data, $kqlData);
+        }
+        return $data;
+    }
+
     /**
      * @param array $data
      * @return array
@@ -249,6 +268,7 @@ final class Handlebars
 
         $data = $this->prune($data);
         $data = $this->modelData($data, $params['page']);
+        $data = $this->kqlData($data, $template);
         $data = $this->queries($data, $params);
         $data = $this->fieldsToValue($data);
 
