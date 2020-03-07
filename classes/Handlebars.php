@@ -268,7 +268,7 @@ final class Handlebars
 
         $data = $this->prune($data);
         $data = $this->modelData($data, $params['page']);
-        $data = $this->kqlData($data, $template);
+        $data = $this->kqlData($data, $template, $params['page']);
         $data = $this->queries($data, $params);
         $data = $this->fieldsToValue($data);
 
