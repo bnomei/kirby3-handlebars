@@ -34,7 +34,9 @@ Kirby::plugin('bnomei/handlebars', [
         'queries' => [
             'site.title',
             'site.url',
+            'page.autoid',
             'page.title',
+            'page.text',
             'page.url',
             'page.slug',
             'page.template',
