@@ -86,10 +86,27 @@ final class Handlebars
         return $this->lncFiles->hbsFile($name);
     }
 
-    private function array_map_recursive(&$arr, $fn) {
-        return array_map(function($item) use($fn){
+    private function array_map_recursive(&$arr, $fn)
+    {
+        return array_map(function ($item) use ($fn) {
             return is_array($item) ? $this->array_map_recursive($item, $fn) : $fn($item);
         }, $arr);
+    }
+
+    /*
+     * PHP array_merge_recursive creates arrays where there
+     * where none when merging.
+     */
+    private function array_merge_recursive(array $array, array $merge): array
+    {
+        foreach ($merge as $key => $value) {
+            if (array_key_exists($key, $array) && is_array($array[$key])) {
+                $array[$key] = $this->array_merge_recursive($array[$key], $value);
+            } else {
+                $array[$key] = $value;
+            }
+        }
+        return $array;
     }
 
     /**
@@ -109,14 +126,14 @@ final class Handlebars
                 str_replace('.', $seperator, $query) . $seperator . '{{' . $query . '}}'
             );
             // thanks @distantnative and @phm_van_den_Kirby
-            $result = array_reduce(array_reverse($result), function($acc, $item){
+            $result = array_reduce(array_reverse($result), function ($acc, $item) {
                 return $acc ? [$item => $acc] : $item;
             });
-            $data = array_merge_recursive($data, $result);
+            $data = $this->array_merge_recursive($data, $result);
         }
 
         // resolve queries in data
-        $data = $this->array_map_recursive($data, static function($value) use ($params) {
+        $data = $this->array_map_recursive($data, static function ($value) use ($params) {
             if (is_a($value, Field::class)) {
                 $value = $value->value();
             }
@@ -124,7 +141,7 @@ final class Handlebars
                 return Str::template($value, $params);
             }
             return $value;
-       });
+        });
 
         return $data;
     }
@@ -136,29 +153,29 @@ final class Handlebars
      */
     public function modelData(array $data, ?Page $page)
     {
-        if (! $page) {
+        if (!$page) {
             return $data;
         }
         $hbsData = $page->handlebarsData();
         if ($hbsData && is_array($hbsData) && count($hbsData)) {
-            $data = array_merge_recursive($data, $hbsData);
+            $data = $this->array_merge_recursive($data, $hbsData);
         }
         return $data;
     }
 
     public function kqlData(array $data, string $template, ?Page $page = null)
     {
-        if (! class_exists('Kirby\\Kql\\Kql')) {
+        if (!class_exists('Kirby\\Kql\\Kql')) {
             return $data;
         }
-        $jsonFile = kirby()->roots()->templates() . '/' . $template. '.' . $this->option('extension-kql');
-        if (! file_exists($jsonFile)) {
+        $jsonFile = kirby()->roots()->templates() . '/' . $template . '.' . $this->option('extension-kql');
+        if (!file_exists($jsonFile)) {
             return $data;
         }
         $kqlData = \Kirby\Kql\Kql::run(Json::read($jsonFile), $page);
 
         if ($kqlData && is_array($kqlData) && count($kqlData)) {
-            $data = array_merge_recursive($data, $kqlData);
+            $data = $this->array_merge_recursive($data, ['page' => $kqlData]);
         }
         return $data;
     }
@@ -262,8 +279,8 @@ final class Handlebars
 
         $params = [
             'kirby' => A::get($data, 'kirby'),
-            'site'  => A::get($data, 'site'),
-            'page'  => A::get($data, 'page'),
+            'site' => A::get($data, 'site'),
+            'page' => A::get($data, 'page'),
         ];
 
         $data = $this->prune($data);
