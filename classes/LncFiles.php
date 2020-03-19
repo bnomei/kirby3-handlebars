@@ -320,7 +320,11 @@ final class LncFiles
     {
         foreach ($this->files as $lncFile) {
             if ($lncFile->partial() === false && $lncFile->name() === $name) {
-                return $lncFile->php() ?? $this->compile($lncFile);
+                $php = $lncFile->php();
+                if (! $php) {
+                    $php = $this->compile($lncFile);
+                }
+                return $php;
             }
         }
         return $this->precompiledTemplate('default');
