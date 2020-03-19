@@ -86,7 +86,7 @@ final class Handlebars
         return $this->lncFiles->hbsFile($name);
     }
 
-    private function array_map_recursive(&$arr, $fn)
+    private function array_map_recursive($arr, $fn)
     {
         return array_map(function ($item) use ($fn) {
             return is_array($item) ? $this->array_map_recursive($item, $fn) : $fn($item);
@@ -114,7 +114,7 @@ final class Handlebars
      * @param array $params
      * @return array
      */
-    public function queries(array $data, array $params): array
+    public function addQueries(array $data, array $params): array
     {
         $seperator = '{{ˇ෴ˇ}}';
         $queries = $this->option('queries', []);
@@ -132,13 +132,18 @@ final class Handlebars
             $data = $this->array_merge_recursive($data, $result);
         }
 
+        return $data;
+    }
+
+    public function resolveQueries(array $data, array $params): array
+    {
         // resolve queries in data
-        $data = $this->array_map_recursive($data, static function ($value) use ($params) {
+        return $this->array_map_recursive($data, static function ($value) use ($params) {
             if (is_a($value, Field::class)) {
                 $value = $value->value();
             }
             if (is_string($value) && Str::contains($value, '{{') && Str::contains($value, '}}')) {
-                return Str::template($value, $params);
+                $value = Str::template($value, $params);
             }
             return $value;
         });
@@ -284,9 +289,12 @@ final class Handlebars
         ];
 
         $data = $this->prune($data);
+        $data = $this->addQueries($data, $params);
         $data = $this->modelData($data, $params['page']);
         $data = $this->kqlData($data, $template, $params['page']);
-        $data = $this->queries($data, $params);
+        var_dump($data);
+        $data = $this->resolveQueries($data, $params);
+        var_dump($data);
         $data = $this->fieldsToValue($data);
 
         $result = $this->read($template, $data);
