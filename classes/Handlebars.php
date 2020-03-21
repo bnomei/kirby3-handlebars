@@ -178,6 +178,7 @@ final class Handlebars
             return $data;
         }
         $kqlData = \Kirby\Kql\Kql::run(Json::read($jsonFile), $page);
+        $kqlData = Json::decode(Json::encode($kqlData)); // flatten all objects
 
         if ($kqlData && is_array($kqlData) && count($kqlData)) {
             $data = $this->array_merge_recursive($data, ['page' => $kqlData]);
