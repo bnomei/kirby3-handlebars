@@ -9,6 +9,7 @@ use Kirby\Cms\Page;
 use Kirby\Data\Json;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Toolkit\A;
+use Kirby\Toolkit\Dir;
 use Kirby\Toolkit\Str;
 
 final class Handlebars
@@ -48,7 +49,8 @@ final class Handlebars
 
         $this->lncFiles = LncFiles::singleton($this->options);
 
-        if ($this->option('debug')) {
+        if ($this->option('debug') &&
+            Dir::exists(kirby()->cache('bnomei.handlebars.render')->root())) {
             kirby()->cache('bnomei.handlebars.render')->flush();
         }
     }
@@ -316,7 +318,9 @@ final class Handlebars
      */
     public function flush()
     {
-        kirby()->cache('bnomei.handlebars.render')->flush();
+        if (Dir::exists(kirby()->cache('bnomei.handlebars.render')->root())) {
+            kirby()->cache('bnomei.handlebars.render')->flush();
+        }
         $this->lncFiles->flush();
     }
 
