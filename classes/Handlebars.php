@@ -170,16 +170,28 @@ final class Handlebars
         return $data;
     }
 
+    private static $kqlJsonFileCache;
     public function kqlData(array $data, string $template, ?Page $page = null)
     {
         if (!class_exists('Kirby\\Kql\\Kql')) {
             return $data;
         }
+        $json = null;
         $jsonFile = kirby()->roots()->templates() . '/' . $template . '.' . $this->option('extension-kql');
-        if (!file_exists($jsonFile)) {
-            return $data;
+        if (!static::$kqlJsonFileCache) {
+            static::$kqlJsonFileCache = [];
         }
-        $kqlData = \Kirby\Kql\Kql::run(Json::read($jsonFile), $page);
+        if (!array_key_exists($jsonFile, static::$kqlJsonFileCache)) {
+            if (!file_exists($jsonFile)) {
+                return $data;
+            }
+            $json = Json::read($jsonFile);
+            static::$kqlJsonFileCache[$jsonFile] = $json;
+        } else {
+            $json = static::$kqlJsonFileCache[$jsonFile];
+        }
+
+        $kqlData = \Kirby\Kql\Kql::run($json, $page);
         $kqlData = Json::decode(Json::encode($kqlData)); // flatten all objects
 
         if ($kqlData && is_array($kqlData) && count($kqlData)) {
