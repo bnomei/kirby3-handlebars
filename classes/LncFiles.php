@@ -336,7 +336,7 @@ final class LncFiles
     public function lncCacheRoot(): string
     {
         // TODO: https://github.com/getkirby/ideas/issues/390
-        return implode([
+        $path = implode([
             kirby()->roots()->cache(),
             DIRECTORY_SEPARATOR,
             'plugins',
@@ -347,6 +347,9 @@ final class LncFiles
             DIRECTORY_SEPARATOR,
             $this->option('extension-output'),
         ]);
+        Dir::make($path);
+
+        return $path;
     }
 
     /**
