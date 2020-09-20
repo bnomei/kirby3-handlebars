@@ -5,7 +5,15 @@
 Kirby::plugin('bnomei/handlebars', [
     'options' => [
         'component' => true,
-        'no-escape' => true, // => FLAG_NOESCAPE aka {{{ }}} are not needed
+        'compile-flags' => function() {
+            // https://zordius.github.io/HandlebarsCookbook/9900-lc-options.html
+            return \LightnCandy\LightnCandy::FLAG_ELSE
+                | \LightnCandy\LightnCandy::FLAG_NOESCAPE
+                // | \LightnCandy\LightnCandy::FLAG_PARENT
+                // | \LightnCandy\LightnCandy::FLAG_RUNTIMEPARTIALcomposer
+                // | \LightnCandy\LightnCandy::FLAG_NAMEDARG
+                ;
+        },
 
         'dir-templates' => function () {
             return kirby()->roots()->templates();

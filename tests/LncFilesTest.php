@@ -6,6 +6,7 @@ use Bnomei\LncFiles;
 use Kirby\Cms\Dir;
 use Kirby\Toolkit\F;
 use Kirby\Toolkit\Str;
+use LightnCandy\LightnCandy;
 use PHPUnit\Framework\TestCase;
 
 class LncFilesTest extends TestCase
@@ -38,11 +39,15 @@ class LncFilesTest extends TestCase
 
     public function testCompileOptions()
     {
-        $files = new LncFiles(['no-escape' => false]);
+        $files = new LncFiles(['compile-flags' => function() {
+            return LightnCandy::FLAG_ELSE;
+        }]);
         $this->assertCount(2, $files->compileOptions());
         $this->assertEquals(16777216, $files->compileOptions()['flags']);
 
-        $files = new LncFiles(['no-escape' => true]);
+        $files = new LncFiles(['compile-flags' => function() {
+            return LightnCandy::FLAG_ELSE | LightnCandy::FLAG_NOESCAPE;
+        }]);
         $this->assertEquals(83886080, $files->compileOptions()['flags']);
     }
 

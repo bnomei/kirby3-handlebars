@@ -30,7 +30,7 @@ final class LncFiles
     {
         $defaults = [
             'debug' => option('debug'),
-            'no-escape' => option('bnomei.handlebars.no-escape'),
+            'compile-flags' => option('bnomei.handlebars.compile-flags'),
             'extension-input' => option('bnomei.handlebars.extension-input'),
             'extension-output' => option('bnomei.handlebars.extension-output'),
             'files' => option('bnomei.handlebars.files'),
@@ -44,7 +44,7 @@ final class LncFiles
         $this->options['lnc'] = $this->options['lnc'] && !$this->options['debug'];
 
         foreach ($this->options as $key => $call) {
-            if (is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
+            if (!is_string($call) && is_callable($call) && !in_array($call, ['hbs', 'handlebars'])) {
                 $this->options[$key] = $call();
             }
         }
@@ -71,13 +71,8 @@ final class LncFiles
      */
     public function compileOptions()
     {
-        $flags = LightnCandy::FLAG_ELSE;
-        if ($this->option('no-escape')) {
-            $flags |= LightnCandy::FLAG_NOESCAPE;
-        }
-
         return [
-            'flags' => $flags,
+            'flags' => $this->option('compile-flags'),
             'partialresolver' => function ($context, $name) {
                 return self::singleton()->hbsOfPartial($name);
             },
