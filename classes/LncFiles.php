@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Bnomei;
 
+use Exception;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Dir;
@@ -352,13 +353,17 @@ final class LncFiles
      */
     public function flush()
     {
-        kirby()->cache('bnomei.handlebars.files')->flush();
+        try {
+            kirby()->cache('bnomei.handlebars.files')->flush();
 
-        foreach(Dir::read($this->lncCacheRoot()) as $file) {
-            $file = $this->lncCacheRoot() . '/' . $file;
-            if(is_file($file)) {
-                @unlink($file);
+            foreach(Dir::read($this->lncCacheRoot()) as $file) {
+                $file = $this->lncCacheRoot() . '/' . $file;
+                if(is_file($file)) {
+                    @unlink($file);
+                }
             }
+        } catch (Exception $e) {
+            //
         }
     }
 
