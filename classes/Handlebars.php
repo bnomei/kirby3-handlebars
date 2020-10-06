@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Bnomei;
 
+use Exception;
 use Kirby\Cms\Field;
 use Kirby\Cms\Page;
 use Kirby\Data\Json;
@@ -49,9 +50,12 @@ final class Handlebars
 
         $this->lncFiles = LncFiles::singleton($this->options);
 
-        if ($this->option('debug') &&
-            Dir::exists(kirby()->cache('bnomei.handlebars.render')->root())) {
-            kirby()->cache('bnomei.handlebars.render')->flush();
+        if ($this->option('debug')) {
+            try {
+                kirby()->cache('bnomei.handlebars.render')->flush();
+            } catch (Exception $e) {
+                //
+            }
         }
     }
 
@@ -330,11 +334,11 @@ final class Handlebars
      */
     public function flush()
     {
-        if (Dir::exists(kirby()->cache('bnomei.handlebars.render')->root())) {
+        try {
             kirby()->cache('bnomei.handlebars.render')->flush();
+            $this->lncFiles->flush();
+        } catch (Exception $e) {
+            //
         }
-        $this->lncFiles->flush();
     }
-
-
 }
