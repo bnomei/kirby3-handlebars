@@ -246,4 +246,44 @@ class LncFilesTest extends TestCase
             $files->target('piece-of-cake', true)
         );
     }
+
+    public function testWritesOnlyOnce()
+    {
+        $singleton = LncFiles::singleton();
+        $hbsFileOfDefault = $singleton->hbsFile('default');
+        $lncFileOfDefault = $singleton->lncFile('default');
+        $options = $singleton->options();
+        $this->assertTrue($options['lnc']);
+        $singleton->flush();
+        $this->assertFileNotExists($singleton->lncFile('default'));
+
+        // simulate request #1, will write files
+        //var_dump('#1');
+        $files = new LncFiles($options);
+        $this->assertCount(0, $files->files());
+        $this->assertFileNotExists($lncFileOfDefault);
+        $files->registerAllTemplates();
+        $this->assertFileExists($files->lncFile('default'));
+        $this->assertCount(5, $files->files());
+
+        $default = $files->precompiledTemplate('default');
+        $modified = F::modified($files->lncFile('default'));
+
+        // simulate request #2, will load and not write
+        sleep(2); // make modified check possible
+        //var_dump('#2');
+        $files = new LncFiles($options);
+        $files->registerAllTemplates();
+        $this->assertCount(5, Dir::read($files->lncCacheRoot()));
+        $default = $files->precompiledTemplate('default');
+        $this->assertEquals($modified, F::modified($files->lncFile('default')));
+
+        // simulate request #3, but hbs file changed so will write again
+        //var_dump('#3');
+        F::write($hbsFileOfDefault, F::read($hbsFileOfDefault));
+        sleep(2); // make modified check possible
+        $files = new LncFiles($options);
+        $files->registerAllTemplates();
+        $this->assertNotEquals($modified, F::modified($files->lncFile('default')));
+    }
 }

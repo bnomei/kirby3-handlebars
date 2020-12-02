@@ -22,6 +22,10 @@ final class LncFiles
      * @var string
      */
     private $modified;
+    /**
+     * @var array
+     */
+    private $options;
 
     /**
      * LncFiles constructor.
@@ -53,6 +57,8 @@ final class LncFiles
         if ($this->option('debug')) {
             $this->flush();
         }
+
+        $this->files = [];
     }
 
     /**
@@ -64,6 +70,11 @@ final class LncFiles
         if ($key) {
             return A::get($this->options, $key);
         }
+        return $this->options;
+    }
+
+    public function options(): array
+    {
         return $this->options;
     }
 
@@ -264,7 +275,10 @@ final class LncFiles
 
         foreach ($this->files as $lncFile) {
             if (!$lncFile->partial() && ($anyPartialNeedsUpdate || $lncFile->needsUpdate())) {
-                $lncFile->php($this->compile($lncFile));
+                $php = $this->compile($lncFile);
+                if (is_string($php)) {
+                    $lncFile->php($php);
+                }
             }
         }
 

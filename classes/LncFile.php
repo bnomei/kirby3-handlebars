@@ -125,6 +125,9 @@ final class LncFile
         if($php === null) {
             if ($this->target() && A::get($this->data, 'lnc') && F::exists($this->target()) ) {
                 $php = F::read($this->target());
+                $this->data['php'] = $php;
+                $this->data['needsUpdate'] = false;
+                return $php;
             }
         }
 
@@ -134,7 +137,17 @@ final class LncFile
 
             // write
             if ($this->target() && A::get($this->data, 'lnc')) {
-                F::write($this->target(), $php);
+                $didWrite = false;
+                while ($didWrite === false) {
+                    try {
+                       F::write($this->target(), $php);
+                    } catch (\Exception $ex) {
+                        //
+                    } finally {
+                        // validate to be 100% sure
+                        $didWrite = F::read($this->target()) === $php;
+                    }
+                }
                 $this->data['needsUpdate'] = false;
             }
         }

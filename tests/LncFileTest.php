@@ -129,12 +129,17 @@ class LncFileTest extends TestCase
 
     public function testTargetFound()
     {
+        $this->assertFileExists($this->target);
+        $this->assertEquals('tmp', F::read($this->target));
+
         $file = new LncFile([
             'source' => $this->default,
             'target' => $this->target,
             'modified' => F::modified($this->default),
+            'lnc' => true,
         ]);
+
         $php = F::read($this->target);
-        $this->assertEquals($php, $file->php($php));
+        $this->assertEquals($php, $file->php());
     }
 }
