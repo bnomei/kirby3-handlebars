@@ -18,14 +18,14 @@ class HandlebarsPage extends Page implements HandlebarsData
             return [];
         }
 
-        $data = array_flip(array_map(static function($value) {
+        $data = array_flip(array_map(static function ($value) {
             if (!is_string($value) && is_callable($value)) {
                 $value = $value();
             }
             return $value ? strval($value) : null;
         }, static::$handlebarsData));
 
-        foreach(array_keys($data) as $methodName) {
+        foreach (array_keys($data) as $methodName) {
             $field = $this->{$methodName}();
             if (is_a($field, Field::class)) {
                 $field = $field->value();

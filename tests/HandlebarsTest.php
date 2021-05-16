@@ -64,7 +64,6 @@ class HandlebarsTest extends TestCase
             'page' => '', 'kirby' => '', 'pages' => '', 'site' => '', ['hello' => ''], 'world' => ''
         ];
         $this->assertCount(2, $hbs->prune($data));
-
     }
 
     public function testFieldsToValue()
@@ -75,7 +74,6 @@ class HandlebarsTest extends TestCase
             'titleFromField' => page('home')->title()->value(),
         ];
         $this->assertCount(2, $hbs->fieldsToValue($data));
-
     }
 
     public function testRead()
@@ -126,10 +124,10 @@ class HandlebarsTest extends TestCase
         });
         $hbs = new Handlebars(['cache.render' => true]);
         // will echo
-        $return = $hbs->render('default',  ['hello' => 'world'], null, null);
+        $return = $hbs->render('default', ['hello' => 'world'], null, null);
         $this->assertNull($return);
 
-        $return = $hbs->render('default',  ['hello' => 'world'], null, null, true);
+        $return = $hbs->render('default', ['hello' => 'world'], null, null, true);
         $this->assertIsString($return);
     }
 

@@ -5,7 +5,7 @@
 Kirby::plugin('bnomei/handlebars', [
     'options' => [
         'component' => true,
-        'compile-flags' => function() {
+        'compile-flags' => function () {
             // https://zordius.github.io/HandlebarsCookbook/9900-lc-options.html
             return \LightnCandy\LightnCandy::FLAG_ELSE
                 | \LightnCandy\LightnCandy::FLAG_NOESCAPE

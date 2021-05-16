@@ -122,8 +122,8 @@ final class LncFile
     public function php(string $php = null): ?string
     {
         // lazy loading
-        if($php === null) {
-            if ($this->target() && A::get($this->data, 'lnc') && F::exists($this->target()) ) {
+        if ($php === null) {
+            if ($this->target() && A::get($this->data, 'lnc') && F::exists($this->target())) {
                 $php = F::read($this->target());
                 $this->data['php'] = $php;
                 $this->data['needsUpdate'] = false;
@@ -140,7 +140,7 @@ final class LncFile
                 $didWrite = false;
                 while ($didWrite === false) {
                     try {
-                       F::write($this->target(), $php);
+                        F::write($this->target(), $php);
                     } catch (\Exception $ex) {
                         //
                     } finally {
@@ -163,7 +163,7 @@ final class LncFile
         $hbs = A::get($this->data, 'hbs');
 
         // lazy loading
-        if(! $hbs) {
+        if (! $hbs) {
             if ($this->source() && F::exists($this->source())) {
                 // fix fractal.build syntax
                 $hbs = F::read($this->source());

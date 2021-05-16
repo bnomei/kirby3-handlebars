@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 
 class HandlebarsTemplateTest extends TestCase
 {
-
     public function testConstruct()
     {
         $hbsT = new HandlebarsTemplate('default');
@@ -34,5 +33,4 @@ class HandlebarsTemplateTest extends TestCase
             $hbsT->file()
         );
     }
-
 }

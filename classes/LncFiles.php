@@ -298,7 +298,7 @@ final class LncFiles
                 return $lncFile->target();
             }
         }
-        if($name === 'default') {
+        if ($name === 'default') {
             throw new InvalidArgumentException(); // @codeCoverageIgnore
         }
         return $this->lncFile('default');
@@ -316,7 +316,7 @@ final class LncFiles
                 return F::realpath($lncFile->source());
             }
         }
-        if($name === 'default') {
+        if ($name === 'default') {
             throw new InvalidArgumentException(); // @codeCoverageIgnore
         }
         return $this->hbsFile('default');
@@ -370,9 +370,9 @@ final class LncFiles
         try {
             kirby()->cache('bnomei.handlebars.files')->flush();
 
-            foreach(Dir::read($this->lncCacheRoot()) as $file) {
+            foreach (Dir::read($this->lncCacheRoot()) as $file) {
                 $file = $this->lncCacheRoot() . '/' . $file;
-                if(is_file($file)) {
+                if (is_file($file)) {
                     @unlink($file);
                 }
             }

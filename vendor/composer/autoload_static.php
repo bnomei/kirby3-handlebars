@@ -43,6 +43,7 @@ class ComposerStaticInit390aac013fe4be7c9a7247da74f48428
         'Bnomei\\HandlebarsTemplate' => __DIR__ . '/../..' . '/classes/HandlebarsTemplate.php',
         'Bnomei\\LncFile' => __DIR__ . '/../..' . '/classes/LncFile.php',
         'Bnomei\\LncFiles' => __DIR__ . '/../..' . '/classes/LncFiles.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Kirby\\ComposerInstaller\\CmsInstaller' => __DIR__ . '/..' . '/getkirby/composer-installer/src/ComposerInstaller/CmsInstaller.php',
         'Kirby\\ComposerInstaller\\Installer' => __DIR__ . '/..' . '/getkirby/composer-installer/src/ComposerInstaller/Installer.php',
         'Kirby\\ComposerInstaller\\Plugin' => __DIR__ . '/..' . '/getkirby/composer-installer/src/ComposerInstaller/Plugin.php',

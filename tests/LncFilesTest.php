@@ -39,13 +39,13 @@ class LncFilesTest extends TestCase
 
     public function testCompileOptions()
     {
-        $files = new LncFiles(['compile-flags' => function() {
+        $files = new LncFiles(['compile-flags' => function () {
             return LightnCandy::FLAG_ELSE;
         }]);
         $this->assertCount(2, $files->compileOptions());
         $this->assertEquals(16777216, $files->compileOptions()['flags']);
 
-        $files = new LncFiles(['compile-flags' => function() {
+        $files = new LncFiles(['compile-flags' => function () {
             return LightnCandy::FLAG_ELSE | LightnCandy::FLAG_NOESCAPE;
         }]);
         $this->assertEquals(83886080, $files->compileOptions()['flags']);
@@ -74,7 +74,9 @@ class LncFilesTest extends TestCase
         foreach ($load as $lncFile) {
             if ($lncFile->needsUpdate() && !$lncFile->partial()) {
                 $h = $lncFile->hbs();
-                if (Str::contains($h, '{{>')) continue;
+                if (Str::contains($h, '{{>')) {
+                    continue;
+                }
 
 //                $this->assertTrue($h);
                 $php = $files->compile($lncFile);
@@ -255,13 +257,13 @@ class LncFilesTest extends TestCase
         $options = $singleton->options();
         $this->assertTrue($options['lnc']);
         $singleton->flush();
-        $this->assertFileNotExists($singleton->lncFile('default'));
+        $this->assertFileDoesNotExist($singleton->lncFile('default'));
 
         // simulate request #1, will write files
         //var_dump('#1');
         $files = new LncFiles($options);
         $this->assertCount(0, $files->files());
-        $this->assertFileNotExists($lncFileOfDefault);
+        $this->assertFileDoesNotExist($lncFileOfDefault);
         $files->registerAllTemplates();
         $this->assertFileExists($files->lncFile('default'));
         $this->assertCount(5, $files->files());
