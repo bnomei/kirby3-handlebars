@@ -10,7 +10,7 @@ Kirby::plugin('bnomei/handlebars', [
             return \LightnCandy\LightnCandy::FLAG_ELSE
                 | \LightnCandy\LightnCandy::FLAG_NOESCAPE
                 // | \LightnCandy\LightnCandy::FLAG_PARENT
-                // | \LightnCandy\LightnCandy::FLAG_RUNTIMEPARTIALcomposer
+                // | \LightnCandy\LightnCandy::FLAG_RUNTIMEPARTIAL
                 // | \LightnCandy\LightnCandy::FLAG_NAMEDARG
                 ;
         },
@@ -31,6 +31,7 @@ Kirby::plugin('bnomei/handlebars', [
         'extension-kql' => 'json',
 
         // ALLOW creation...
+        'cache' => true, // to get the root folder
         'cache.render' => true, // creates a plugin cache called 'render'
         'cache.files' => true, // creates a plugin cache called 'files'
         'cache.lnc' => true, // creates a plugin cache called 'lnc'

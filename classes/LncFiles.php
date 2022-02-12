@@ -345,21 +345,7 @@ final class LncFiles
      */
     public function lncCacheRoot(): string
     {
-        // TODO: https://github.com/getkirby/ideas/issues/390
-        $path = implode([
-            kirby()->roots()->cache(),
-            DIRECTORY_SEPARATOR,
-            'plugins',
-            DIRECTORY_SEPARATOR,
-            'bnomei',
-            DIRECTORY_SEPARATOR,
-            'handlebars',
-            DIRECTORY_SEPARATOR,
-            $this->option('extension-output'),
-        ]);
-        Dir::make($path);
-
-        return $path;
+        return kirby()->cache('bnomei.handlebars')->root();
     }
 
     /**
