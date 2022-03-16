@@ -21,7 +21,7 @@ Kirby 3 Component for semantic templates with [Handlebars](https://handlebarsjs.
 
 | M | O | N | E | Y |
 |---|----|---|---|---|
-| [Github sponsor](https://github.com/sponsors/bnomei) | [Patreon](https://patreon.com/bnomei) | [Buy Me a Coffee](https://buymeacoff.ee/bnomei) | [Paypal dontation](https://www.paypal.me/bnomei/15) | [Buy a Kirby license using this affiliate link](https://a.paddle.com/v2/click/1129/35731?link=1170) |
+| [Github sponsor](https://github.com/sponsors/bnomei) | [Patreon](https://patreon.com/bnomei) | [Buy Me a Coffee](https://buymeacoff.ee/bnomei) | [Paypal dontation](https://www.paypal.me/bnomei/15) | [Hire me](mailto:b@bnomei.com?subject=Kirby) |
 
 ## Wiki
 Continue to the [Handlebars Plugin Wiki](https://github.com/bnomei/kirby3-handlebars/wiki) to read more on how to install, setup and use this plugin.
