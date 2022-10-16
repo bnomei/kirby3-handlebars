@@ -1,7 +1,7 @@
 {
   "name": "bnomei/kirby3-handlebars",
   "type": "kirby-plugin",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "license": "MIT",
   "description": "Kirby 3 Component for semantic templates with Handlebars and Mustache",
   "authors": [
@@ -39,10 +39,13 @@
   },
   "config": {
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
   },
   "require": {
-    "php": ">=7.3.0",
+    "php": ">=8.0",
     "getkirby/composer-installer": "^1.2",
     "zordius/lightncandy": "1.2.2"
   },

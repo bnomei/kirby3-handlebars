@@ -12,7 +12,7 @@ Kirby::plugin('bnomei/handlebars', [
                 // | \LightnCandy\LightnCandy::FLAG_PARENT
                 // | \LightnCandy\LightnCandy::FLAG_RUNTIMEPARTIAL
                 // | \LightnCandy\LightnCandy::FLAG_NAMEDARG
-                ;
+            ;
         },
 
         'dir-templates' => function () {
@@ -64,7 +64,7 @@ Kirby::plugin('bnomei/handlebars', [
     ],
     'pageMethods' => [
         'handlebars' => function ($template = null, $data = []) {
-            return (new \Bnomei\Handlebars)->render(
+            return (new \Bnomei\Handlebars())->render(
                 $template ?? $this->template(),
                 $this->controller($data),
                 null,
@@ -82,13 +82,13 @@ if (!class_exists('Bnomei\Handlebars')) {
 if (!function_exists('handlebars')) {
     function handlebars(string $template, $data = [], $return = false): ?string
     {
-        return (new \Bnomei\Handlebars)->render($template, $data, null, null, $return);
+        return (new \Bnomei\Handlebars())->render($template, $data, null, null, $return);
     }
 }
 
 if (!function_exists('hbs')) {
     function hbs(string $template, $data = [], $return = false): ?string
     {
-        return (new \Bnomei\Handlebars)->render($template, $data, null, null, $return);
+        return (new \Bnomei\Handlebars())->render($template, $data, null, null, $return);
     }
 }

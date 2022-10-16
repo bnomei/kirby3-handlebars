@@ -265,7 +265,7 @@ final class Handlebars
      * @param string $result
      * @return bool
      */
-    public function write(?string $renderCacheId = null, string $result): bool
+    public function write(?string $renderCacheId = null, ?string $result = null): bool
     {
         if ($renderCacheId && $this->option('render')) {
             return kirby()->cache('bnomei.handlebars.render')->set($renderCacheId, $result);

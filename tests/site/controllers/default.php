@@ -1,4 +1,5 @@
 <?php
+
 return function ($site, $page, $kirby) {
     return [
         'title' => $page->title()->value(), // Home
