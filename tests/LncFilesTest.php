@@ -125,7 +125,7 @@ class LncFilesTest extends TestCase
         $files = new LncFiles();
         F::write($files->lncCacheRoot() . '/test.tmp', 'test');
         $files->flush();
-        $this->assertTrue(Dir::isEmpty($files->lncCacheRoot()));
+        $this->assertTrue(count(Dir::files($files->lncCacheRoot())) === 0);
     }
 
     public function testModified()
@@ -229,8 +229,8 @@ class LncFilesTest extends TestCase
     public function testLncCacheRoot()
     {
         $files = new LncFiles();
-        $this->assertEquals(
-            __DIR__ . '/site/cache/plugins/bnomei/handlebars/lnc',
+        $this->assertMatchesRegularExpression(
+            "/.*\/site\/cache\/.*\/bnomei\/handlebars/",
             $files->lncCacheRoot()
         );
     }
@@ -276,7 +276,7 @@ class LncFilesTest extends TestCase
         //var_dump('#2');
         $files = new LncFiles($options);
         $files->registerAllTemplates();
-        $this->assertCount(5, Dir::read($files->lncCacheRoot()));
+        $this->assertCount(7, Dir::read($files->lncCacheRoot()));
         $default = $files->precompiledTemplate('default');
         $this->assertEquals($modified, F::modified($files->lncFile('default')));
 
