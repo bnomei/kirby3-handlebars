@@ -25,6 +25,11 @@ final class Handlebars
      */
     private $lncFiles;
 
+    /*
+     * @var array
+     */
+    private $options;
+
     /**
      * Handlebars constructor.
      * @param array $options
