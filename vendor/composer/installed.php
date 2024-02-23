@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'bnomei/kirby3-handlebars',
-        'pretty_version' => '3.6.1',
-        'version' => '3.6.1.0',
-        'reference' => NULL,
+        'pretty_version' => '4.0.0',
+        'version' => '4.0.0.0',
+        'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'bnomei/kirby3-handlebars' => array(
-            'pretty_version' => '3.6.1',
-            'version' => '3.6.1.0',
-            'reference' => NULL,
+            'pretty_version' => '4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'zordius/lightncandy' => array(
-            'pretty_version' => 'v1.2.2',
-            'version' => '1.2.2.0',
-            'reference' => '448cb2855d7301fa5380d8228255d46e9be92903',
+            'pretty_version' => 'v1.2.6',
+            'version' => '1.2.6.0',
+            'reference' => 'b451f73e8b5c73e62e365997ba3c993a0376b72a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../zordius/lightncandy',
             'aliases' => array(),
